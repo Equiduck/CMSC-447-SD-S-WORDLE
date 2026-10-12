@@ -2,45 +2,5 @@ body{
   padding: 25px;
 }
 .title {
-	color: #0d28d8;
-}
-
-.h1 {
-  color: #0d28d8;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.button {
-  background-color: #818384;
-  color: rgb(255, 255, 255);
-  height: 60px;
-  width: 50px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font: bold 16px Arial, sans-serif;
-}
-
-.enterButton {
-  background-color: #818384;
-  color: rgb(255, 255, 255);
-  height: 60px;
-  width: 80px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font: bold 16px Arial, sans-serif;
-}
-
-.deleteButton {
-  background-color: #818384;
-  color: rgb(255, 255, 255);
-  height: 60px;
-  width: 80px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font: bold 16px Arial, sans-serif;
+	color: #5C6AC4;
 }
