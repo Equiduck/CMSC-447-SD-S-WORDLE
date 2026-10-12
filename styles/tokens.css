@@ -1,0 +1,24 @@
+
+:root {
+  --gray-13: #d3d6da;
+  --gray-18: #787c7e;
+  --gray-19: #878a8c;
+  --white: #fff;
+
+  --space-0-5: 4px;
+  --space-1: 8px;
+  --space-2: 16px;
+
+  /* Light/Regular Mode */
+  --color-tone-1: #000;
+  --color-tone-3: var(--gray-19);
+  --color-tone-4: var(--gray-13);
+  --color-tone-7: var(--white);
+  --color-background: var(--color-tone-7);
+
+  --header-toolbar-height: 49px;
+  --game-max-width: 500px;
+
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="Shared-state Wordle - Sprint 1 layout skeleton (separator bar + 6x5 grid)"
+    />
+    <title>Shared-State Wordle - Sprint 1 skeleton</title>
+    <!-- No build step: open this file directly, or serve the folder. -->
+    <link rel="stylesheet" href="./styles/tokens.css" />
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="./styles/board.css" />
+  </head>
+  <body>
+    <!-- Sprint 1: the separator bar (widget slots still empty) and the 6x5
+         grid drawn by board.js. No keyboard or input handling yet. -->
+    <div class="app">
+      <header class="app__bar" role="banner">
+        <div class="app__slot app__slot--start" data-slot="start"></div>
+        <div class="app__slot app__slot--center" data-slot="center"></div>
+        <div class="app__slot app__slot--end" data-slot="end"></div>
+      </header>
+
+      <main class="app__main">
+        <div class="board-container">
+          <div class="board" id="board" aria-label="Shared board"></div>
+        </div>
+      </main>
+    </div>
+
+    <script src="./board.js"></script>
+  </body>
+</html>
