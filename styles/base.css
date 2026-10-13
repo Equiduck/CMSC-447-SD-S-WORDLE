@@ -20,14 +20,12 @@ body {
 }
 
 .app {
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
 /* The separator line. */
 .app__bar {
-  height: var(--header-toolbar-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,4 +50,12 @@ body {
   min-height: 0;
   width: min(100%, var(--game-max-width));
   margin: 0 auto;
+}
+
+h1 {
+  font-family: "nyt-franklin", "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: var(--space-2);
 }

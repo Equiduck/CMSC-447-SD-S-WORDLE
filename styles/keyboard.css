@@ -1,0 +1,45 @@
+
+.button {
+  background-color: #818384;
+  color: rgb(255, 255, 255);
+  height: 60px;
+  width: 50px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font: bold 16px Arial, sans-serif;
+  text-align: center;
+  display: inline-block;
+  margin-right: 1px;
+  margin-left: 1px;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  
+
+}
+
+.enterButton {
+  background-color: #818384;
+  color: rgb(255, 255, 255);
+  height: 60px;
+  width: 80px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font: bold 16px Arial, sans-serif;
+}
+
+.deleteButton {
+  background-color: #818384;
+  color: rgb(255, 255, 255);
+  height: 60px;
+  width: 80px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font: bold 16px Arial, sans-serif;
+}
+
+.keyboard-Container {
+  text-align: center;
+}
