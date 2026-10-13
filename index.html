@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/board.css" />
     <link rel="stylesheet" href="./styles/keyboard.css"/>
+    <link rel="stylesheet" href="./styles/player.css"/>
   </head>
   <body>
     <!-- Sprint 1: the separator bar (widget slots still empty) and the 6x5
@@ -25,17 +26,40 @@
 
       <h1>Shared-State Wordle</h1>
 
-      <header class="app__bar" role="banner">
-        <div class="app__slot app__slot--start" data-slot="start"></div>
-        <div class="app__slot app__slot--center" data-slot="center"></div>
-        <div class="app__slot app__slot--end" data-slot="end"></div>
+       <!--turn indicator -->
+      <h2 id="turn-indicator">Player 1's Turn</h2>
+
+      <!-- Player 1 + Board + Player 2 -->
+      <div class="player-layout">
+
+        <!-- Player 1-->
+        <div class="player" id="player1">
+          <h2>Player 1</h2>
+          <p class="status" id="player1-status">Thinking...</p>
+      </div>
+
+      <div class="app">
+        
+        <header class="app__bar" role="banner">
+          <div class="app__slot app__slot--start" data-slot="start"></div>
+          <div class="app__slot app__slot--center" data-slot="center"></div>
+          <div class="app__slot app__slot--end" data-slot="end"></div>
       </header>
 
-      <main class="app__main">
-        <div class="board-container">
-          <div class="board" id="board" aria-label="Shared board"></div>
+        <main class="app__main">
+          <div class="board-container">
+            <div class="board" id="board" aria-label="Shared board"></div>
         </div>
       </main>
+    </div>
+
+
+       <!-- Player 2 -->
+        <div class="player" id="player2">
+          <h2>Player 2</h2>
+          <p class="status" id="player2-status">Waiting...</p>
+        </div>
+
     </div>
 
     <script src="./board.js"></script>
