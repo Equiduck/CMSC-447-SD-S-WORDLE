@@ -43,3 +43,14 @@
 .keyboard-Container {
   text-align: center;
 }
+
+.Options-Button {
+  background-color: #818384;
+  color: rgb(255, 255, 255);
+  height: 60px;
+  width: 90px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 5px;
+  font: bold 16px Arial, sans-serif;
+}
