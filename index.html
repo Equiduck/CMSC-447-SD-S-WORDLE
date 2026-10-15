@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./styles/board.css" />
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
+    <link rel="stylesheet" href="./styles/Options.css"/>
   </head>
   <body>
     <!-- Sprint 1: the separator bar (widget slots still empty) and the 6x5
@@ -25,10 +26,25 @@
 
         <h1>Shared-State Wordle</h1>
 
-        <button class = "Options-Button">Options</button>
+        <button class = "Options-Button" onclick="openForm()">Options</button>
 
 
     
+    </div>
+
+    <div class = "form-popup" id = "myForm">
+
+      <form action = "/action_page.php" class = "form-container">
+
+        <h1>Options</h1>
+
+          <label for="email"><b>Dark Mode</b></label>
+
+          <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+
+
+      </form>
+
     </div>
 
 
