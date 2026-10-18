@@ -12,6 +12,18 @@ body,
   height: 100%;
 }
 
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem
+}
+
+nav a {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 0.5rem 0;
+}
+
 body {
   margin: 0;
   background-color: var(--color-background);
