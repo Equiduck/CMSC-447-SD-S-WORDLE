@@ -12,12 +12,10 @@
     <!-- No build step: open this file directly, or serve the folder. -->
     <link rel="stylesheet" href="./styles/tokens.css" />
     <link rel="stylesheet" href="./styles/base.css" />
-    <link rel="stylesheet" href="./styles/board.css" />
-    <link rel="stylesheet" href="./styles/keyboard.css"/>
-    <link rel="stylesheet" href="./styles/player.css"/>
+    <link rel="stylesheet" href="./styles/history.css"/>
   </head>
 
-    <main>  
+    <body>  
         <div class="container">  
             <header>
                 <nav>
@@ -28,11 +26,17 @@
                     </ul>
                 </nav>
             </header>
+        </div>
 
-            <section class="history">  
-                <h2>History</h2>
+        <div class="history">  
+            <h1>History</h1>
+            <hr width="70%" size="1">
                 
-            </section>  
+            <div class="historyGrid">
+                <div>Loss: Total guesses 3</div>
+                <div>Win: At 3 words</div>
+            </div>
+            
         </div>  
-    </main>  
+    </body> 
 </html>
