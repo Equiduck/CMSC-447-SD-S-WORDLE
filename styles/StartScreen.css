@@ -1,17 +1,23 @@
 .centeredItems {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     min-height: 100vh;
-
-
+    margin: 0, 0, 0, 0;
 }
 
 .playButton {
 
     background-color: black;
     color: white;
+
+}
+
+.pop-up {
+    display: flex;
+    flex-direction: column;
+
 
 }
 
@@ -35,6 +41,10 @@ h1 {
     font-family: "PT Serif Caption", serif;
     font-weight: 400;
     font-style: normal;
+    margin-top: 3px;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
     
 }
 
@@ -56,6 +66,7 @@ button {
     font-family: "PT Serif Caption", serif;
     font-weight: 400;
     font-style: normal;
+    margin: 3px;
 
 }
 
