@@ -1,0 +1,62 @@
+.centeredItems {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+
+
+}
+
+.playButton {
+
+    background-color: black;
+    color: white;
+
+}
+
+body {
+
+    background-color: #e3e3e1;
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+img {
+
+    width: 5%;
+    height: 5%;
+
+}
+
+h1 {
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+
+h2 {
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+
+button {
+
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 30px;
+    padding: 12px;
+    width: 130px;
+    background-color: #e3e3e1;
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+
