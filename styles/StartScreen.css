@@ -17,7 +17,19 @@
 .pop-up {
     display: flex;
     flex-direction: column;
+    width: 400px;
+    height: 300px;
+    border-radius: 6px;
+    position: absolute;
+    background: white;
+    text-align: center;
+    
 
+}
+
+.pop-up h2 {
+
+    font-size: 15px;
 
 }
 
