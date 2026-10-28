@@ -22,29 +22,57 @@
     margin: 3px;
     cursor: pointer;
 
+    /* next updates */
+    text-decoration: none;
+    display: inline-block;
+
 }
 
 .popup {
+    
+    /*
     display: flex;
     flex-direction: column;
     width: 400px;
     height: 270px;
-    border-radius: 6px;
+    border: 1px solid black;
+    border-radius: 5px;
     justify-content: center;
     align-items: center;
     position: absolute;
-    background: white;
+    background-color: #e3e3e1;
     visibility: hidden;
     margin: 0;
+    */
+
+    opacity: 0;
+    transition: 0.5s;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 270px;
+    background: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e3e3e1;
+    visibility: hidden;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+    
 
 }
 
+/*
 .open-popup{
 
     visibility: visible;
 
 }
-
+*/
 .popup h2 {
 
     font-size: 15px;
@@ -54,7 +82,7 @@
 
 .exitButton {
 
-    background: white;
+    background: #e3e3e1;
     border-radius: 0px;
     border: 0;
     text-align: center;
@@ -63,9 +91,12 @@
     height: 50px;
     font-size: 40px;
     justify-content: right;
-    display: flex;
     margin-right: 5px;
-    margin-left: auto;
+
+    /*new additions*/
+    text-decoration: none;
+    display: inline-block;
+    color: black;
 
 
 }
@@ -81,8 +112,8 @@ body {
 
 img {
 
-    width: 5%;
-    height: 5%;
+    width: 10%;
+    height: 10%;
 
 }
 
@@ -119,6 +150,42 @@ h2 {
     cursor: pointer;
     color: black;
     text-decoration: none;
+    display: inline-block;
+
+}
+
+/* testing */
+.container.active {
+
+    filter: blur(20px);
+
+    
+
+}
+
+.popup.active {
+
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.container {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+    transition: 0.5s;
+    width: 100%;
+}
+
+.top {
+
+    justify-content: right;
+    text-align: right;
 
 }
 
