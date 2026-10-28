@@ -11,25 +11,62 @@
 
     background-color: black;
     color: white;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 30px;
+    padding: 12px;
+    width: 130px;
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 3px;
+    cursor: pointer;
 
 }
 
-.pop-up {
+.popup {
     display: flex;
     flex-direction: column;
     width: 400px;
-    height: 300px;
+    height: 270px;
     border-radius: 6px;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     background: white;
-    text-align: center;
-    
+    visibility: hidden;
+    margin: 0;
 
 }
 
-.pop-up h2 {
+.open-popup{
+
+    visibility: visible;
+
+}
+
+.popup h2 {
 
     font-size: 15px;
+
+}
+
+
+.exitButton {
+
+    background: white;
+    border-radius: 0px;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+    justify-content: right;
+    display: flex;
+    margin-right: 5px;
+    margin-left: auto;
+
 
 }
 
@@ -67,7 +104,7 @@ h2 {
     
 }
 
-button {
+.averageButton {
 
     border: 1px solid black;
     text-align: center;
@@ -79,6 +116,9 @@ button {
     font-weight: 400;
     font-style: normal;
     margin: 3px;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
 
 }
 

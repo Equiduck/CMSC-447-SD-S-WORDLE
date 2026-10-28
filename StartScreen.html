@@ -20,11 +20,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption:ital@0;1&display=swap" rel="stylesheet">
+
   </head>
 
     <main>  
         <div class="container">  
             <header>
+                <!---
                 <nav>
                     <ul>
                         <li><a href="StartScreen.html">Start Screen</a></li>
@@ -32,6 +34,7 @@
                         <li><a href="history.html">History</a></li>
                     </ul>
                 </nav>
+                -->
             </header>
 
                 <div class = "centeredItems">
@@ -40,19 +43,26 @@
                     <h1><b>Two-Player Wordle</b></h1>
                     <h2>Wordle with a little twist...</h2>
 
-                    <div class="buttons">
-                        <button class = "playButton"> Play</button>
-                        <button> Log in</button>
-                        <button> Sign up</button>
+                    
+
+                    <div type = "submit" class="buttons">
+                        <button class = "playButton" onclick = "openPopup()"> Play</button>
+                        <button class = "averageButton">Log in</button>
+                        <button class = "averageButton"> Sign up</button>
                     </div>
 
-                    <div class = "pop-up">
+                    <p id = "month"></p>
+
+                    <div class = "popup" id="popup">
+
+                        <button class = "exitButton" onclick = "closePopup()"> &times</button>
 
                         <h1> Language Selector</h1>
                         <h2> Please Select Your Preferred Game Language</h2>
 
-                        <button> English</button>
-                        <button> Spanish</button>
+
+                        <a href = "index.html" class = "averageButton"> English</a>
+                        <a href = "index.html" class = "averageButton"> Spanish</a>
 
 
                     </div>
@@ -60,5 +70,8 @@
                 </div>
                 
         </div>  
+
+        <script src = "/javascript/StartScreen.js"></script>
+
     </main>  
 </html>
