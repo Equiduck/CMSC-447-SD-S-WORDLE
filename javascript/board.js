@@ -2,6 +2,27 @@
 let typingTimer;
 //Updates banner for players turn. As of right now it updates when you hit the enter key
 //Later when we start working on gameplay it will be updated to end when the players turn is properly over
+
+//updates player names using their information or keeps basic names if they are a guest
+function updatePlayerNames(game){
+	//.trim() is removing extra spaces from the players username if it has any
+  const player1Name = game.player1?.trim() || "Player 1";
+  const player2Name = game.player2?.trim() || "Player 2";
+
+  document.getElementById("player1-name").textContent = player1Name;
+  document.getElementById("player2-name").textContent = player2Name;
+
+  //set initial turn banner to Players name 
+  document.getElementById("turn-indicator").textContent = player1Name + "'s Turn";
+
+}
+
+//Temporary game data for testing until we have actual data from backend. This will not be in the final product 
+const testGame = {
+  player1: "Alice",
+};
+updatePlayerNames(testGame);
+
 function updateTurnDisplay(){
 
 	let currentPlayer = 1;
@@ -16,7 +37,11 @@ function updateTurnDisplay(){
 				currentPlayer = 1;
 			}
 
-			document.getElementById("turn-indicator").textContent = "Player " + currentPlayer + "'s Turn";
+			const currentName = currentPlayer === 1
+				? document.getElementById("player1-name").textContent
+				: document.getElementById("player2-name").textContent;
+
+			document.getElementById("turn-indicator").textContent = currentName + "'s Turn";
 
 			//Change player status based on whose turn it is 
 			//The active player always starts as Thinking....
