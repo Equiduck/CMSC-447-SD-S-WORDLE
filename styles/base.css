@@ -71,3 +71,75 @@ h1 {
   text-align: center;
   margin-top: var(--space-2);
 }
+
+.container.active {
+
+    filter: blur(20px);
+    user-select: none;
+    pointer-events: none;
+    
+
+}
+
+.optionsPopup.active {
+
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+
+.optionsPopup {
+    
+    opacity: 0;
+    transition: 0.5s;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    height: 350px;
+    background: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    background-color: white;
+    visibility: hidden;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+    
+
+}
+
+.container {
+
+  transition: 0.5s;
+
+}
+
+.optionsExitButton {
+
+    background: white;
+    border-radius: 0px;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+    justify-content: right;
+    margin-right: 5px;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+
+
+}
+
+.top {
+
+  text-align: right;
+  justify-content: right;
+
+}

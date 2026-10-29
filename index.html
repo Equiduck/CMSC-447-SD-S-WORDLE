@@ -21,100 +21,137 @@
     <!-- Sprint 1: the separator bar (widget slots still empty) and the 6x5
         grid drawn by board.js. No keyboard or input handling yet. -->
 
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="StartScreen.html">Start Screen</a></li>
-                    <li><a href="index.html" class="active">Game</a></li>
-                    <li><a href="history.html">History</a></li>
-                </ul>
-            </nav>
-        </header>
-         
-    <div class="app">
-
-      <h1>Shared-State Wordle</h1>
-
-       <!--turn indicator -->
-      <h2 id="turn-indicator">Player 1's Turn</h2>
-
-      <!-- Player 1 + Board + Player 2 -->
-      <div class="player-layout">
-
-        <!-- Player 1-->
-        <div class="player" id="player1">
-          <h2 id="player1-name">Player 1</h2>
-          <p class="status" id="player1-status">Thinking...</p>
-      </div>
-
-      <div class="app">
+    <div class = "container">
+      
+      <header>
         
-        <header class="app__bar" role="banner">
-          <div class="app__slot app__slot--start" data-slot="start"></div>
-          <div class="app__slot app__slot--center" data-slot="center"></div>
-          <div class="app__slot app__slot--end" data-slot="end"></div>
+        <nav>
+          
+          <ul>
+            
+            <li><a href="StartScreen.html">Start Screen</a></li>
+            <li><a href="index.html" class="active">Game</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href = "#" id = "optionsButton">Options</a></li>
+
+          </ul>
+        
+        </nav>
+        
       </header>
+         
+      <div class="app">
 
-        <main class="app__main">
-          <div class="board-container">
-            <div class="board" id="board" aria-label="Shared board"></div>
+        <h1>Shared-State Wordle</h1>
+
+         <!--turn indicator -->
+        <h2 id="turn-indicator">Player 1's Turn</h2>
+
+        <!-- Player 1 + Board + Player 2 -->
+        <div class="player-layout">
+
+          <!-- Player 1-->
+          <div class="player" id="player1">
+
+            <h2 id="player1-name">Player 1</h2>
+            <p class="status" id="player1-status">Thinking...</p>
+      
+          </div>
+
+          <div class="app">
+        
+          <header class="app__bar" role="banner">
+            
+            <div class="app__slot app__slot--start" data-slot="start"></div>
+            <div class="app__slot app__slot--center" data-slot="center"></div>
+            <div class="app__slot app__slot--end" data-slot="end"></div>
+
+          </header>
+
+            <main class="app__main">
+            
+              <div class="board-container">
+              
+                <div class="board" id="board" aria-label="Shared board"></div>
+            
+              </div>
+      
+            </main>
+  
+
         </div>
-      </main>
-    </div>
 
 
-       <!-- Player 2 -->
+        <!-- Player 2 -->
         <div class="player" id="player2">
+          
           <h2 id="player2-name">Player 2</h2>
           <p class="status" id="player2-status">Waiting...</p>
+        
         </div>
 
+      </div>
+
+      <script src="./javascript/board.js"></script>
+
+      <div class = "keyboard-Container">
+
+      <!-- First line of keyboard -->
+      <button class="button">Q</button>
+      <button class="button">W</button>
+      <button class="button">E</button>
+      <button class="button">R</button>
+      <button class="button">T</button>
+      <button class="button">Y</button>
+      <button class="button">U</button>
+      <button class="button">I</button>
+      <button class="button">O</button>
+      <button class="button">P</button>
+
+      <br>
+
+      <!-- Second line of keyboard -->
+      <button class="button">A</button>
+      <button class="button">S</button>
+      <button class="button">D</button>
+      <button class="button">F</button>
+      <button class="button">G</button>
+      <button class="button">H</button>
+      <button class="button">J</button>
+      <button class="button">K</button>
+      <button class="button">L</button>
+
+      <br>
+
+      <!-- Third line of keyboard -->
+      <button class="enterButton">Enter</button>
+      <button class="button">Z</button>
+      <button class="button">X</button>
+      <button class="button">C</button>
+      <button class="button">V</button>
+      <button class="button">B</button>
+      <button class="button">N</button>
+      <button class="button">M</button>
+      <button class="deleteButton">Delete</button>
+
+      </div>
+
     </div>
+  </div>
 
-    <script src="./javascript/board.js"></script>
 
-    <div class = "keyboard-Container">
+    <div class = "optionsPopup" id = "optionsPopup">
 
-    <!-- First line of keyboard -->
-    <button class="button">Q</button>
-    <button class="button">W</button>
-    <button class="button">E</button>
-    <button class="button">R</button>
-    <button class="button">T</button>
-    <button class="button">Y</button>
-    <button class="button">U</button>
-    <button class="button">I</button>
-    <button class="button">O</button>
-    <button class="button">P</button>
+      <div class = "top">
+                <a href = "#" class = "optionsExitButton" id = "optionsExitButton"> &times</a>
+      </div>
 
-    <br>
+      <h1> Options</h1>
 
-    <!-- Second line of keyboard -->
-    <button class="button">A</button>
-    <button class="button">S</button>
-    <button class="button">D</button>
-    <button class="button">F</button>
-    <button class="button">G</button>
-    <button class="button">H</button>
-    <button class="button">J</button>
-    <button class="button">K</button>
-    <button class="button">L</button>
-
-    <br>
-
-    <!-- Third line of keyboard -->
-    <button class="enterButton">Enter</button>
-    <button class="button">Z</button>
-    <button class="button">X</button>
-    <button class="button">C</button>
-    <button class="button">V</button>
-    <button class="button">B</button>
-    <button class="button">N</button>
-    <button class="button">M</button>
-    <button class="deleteButton">Delete</button>
 
     </div>
 
     <script src="./javascript/key-input.js"></script>
+    <script src = "./javascript/Options.js"></script>
   </body>
 </html>
