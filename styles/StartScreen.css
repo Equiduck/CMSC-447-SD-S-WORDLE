@@ -11,12 +11,66 @@
 
     background-color: black;
     color: white;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 30px;
+    padding: 12px;
+    width: 130px;
+    font-family: "PT Serif Caption", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
 
 }
 
-.pop-up {
-    display: flex;
-    flex-direction: column;
+.popup {
+    
+    opacity: 0;
+    transition: 0.5s;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 270px;
+    background: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e3e3e1;
+    visibility: hidden;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+    
+
+}
+
+.popup h2 {
+
+    font-size: 15px;
+
+}
+
+
+.exitButton {
+
+    background: #e3e3e1;
+    border-radius: 0px;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+    justify-content: right;
+    margin-right: 5px;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
 
 
 }
@@ -32,8 +86,8 @@ body {
 
 img {
 
-    width: 5%;
-    height: 5%;
+    width: 10%;
+    height: 10%;
 
 }
 
@@ -55,7 +109,7 @@ h2 {
     
 }
 
-button {
+.averageButton {
 
     border: 1px solid black;
     text-align: center;
@@ -67,6 +121,44 @@ button {
     font-weight: 400;
     font-style: normal;
     margin: 3px;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+
+}
+
+.container.active {
+
+    filter: blur(20px);
+
+    
+
+}
+
+.popup.active {
+
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.container {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+    transition: 0.5s;
+    width: 100%;
+}
+
+.top {
+
+    justify-content: right;
+    text-align: right;
 
 }
 
