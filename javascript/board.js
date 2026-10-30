@@ -23,75 +23,71 @@ const testGame = {
 };
 updatePlayerNames(testGame);
 
+//Player 1 starts for temporary testing 
+let currentPlayer = 1;
+
 function updateTurnDisplay(){
 
-	let currentPlayer = 1;
+	const currentName = currentPlayer === 1
+		? document.getElementById("player1-name").textContent
+		: document.getElementById("player2-name").textContent;
 
-	document.addEventListener("keydown", function(event){
-		if (event.key == "Enter"){
+	document.getElementById("turn-indicator").textContent = currentName + "'s Turn";
+
+	//Change player status based on whose turn it is 
+	//The active player always starts as Thinking....
+	if(currentPlayer == 1){
+
+		document.getElementById("player1-status").textContent = "Thinking...";
+		document.getElementById("player2-status").textContent = "Waiting...";
+	}
+	else{
+		document.getElementById("player2-status").textContent = "Thinking...";
+		document.getElementById("player1-status").textContent = "Waiting...";
+	}
+
+	//stop old timer when turn changes 
+	clearTimeout(typingTimer);
+}
+
+//Called only after an accepted guess 
+function advanceTurn(){
+	currentPlayer = currentPlayer === 1 ? 2 : 1;
+	updateTurnDisplay();
+}
+
+document.addEventListener("keydown", function(event){
+
+		//Anyother key besides enter being pressed means they are typing 
+
+		if(currentPlayer == 1){
+
+			document.getElementById("player1-status").textContent = "Typing...";
+			document.getElementById("player2-status").textContent = "Waiting...";
+		}
+		else{
+			document.getElementById("player2-status").textContent = "Typing...";
+			document.getElementById("player1-status").textContent = "Waiting...";
+		}
+
+		
+
+		//Starting a 3 secound timer 
+		//If 3 secounds pass and the active player doesn't touch any keys switch it to thinking 
+		//The timer also gets restarted every time they touch a key 
+		clearTimeout(typingTimer);
+
+		typingTimer = setTimeout(function(){
+				
 			if(currentPlayer == 1){
-				currentPlayer = 2;
-			}
-
-			else{
-				currentPlayer = 1;
-			}
-
-			const currentName = currentPlayer === 1
-				? document.getElementById("player1-name").textContent
-				: document.getElementById("player2-name").textContent;
-
-			document.getElementById("turn-indicator").textContent = currentName + "'s Turn";
-
-			//Change player status based on whose turn it is 
-			//The active player always starts as Thinking....
-			if(currentPlayer == 1){
-
 				document.getElementById("player1-status").textContent = "Thinking...";
-				document.getElementById("player2-status").textContent = "Waiting...";
 			}
 			else{
 				document.getElementById("player2-status").textContent = "Thinking...";
-				document.getElementById("player1-status").textContent = "Waiting...";
 			}
-
-			//stop old timer when turn changes 
-			clearTimeout(typingTimer);
-		}
-
-		//Anyother key besides enter being pressed means they are typing 
-		else{
-
-			if(currentPlayer == 1){
-
-				document.getElementById("player1-status").textContent = "Typing...";
-				document.getElementById("player2-status").textContent = "Waiting...";
-			}
-			else{
-				document.getElementById("player2-status").textContent = "Typing...";
-				document.getElementById("player1-status").textContent = "Waiting...";
-			}
-
 		
-
-			//Starting a 3 secound timer 
-			//If 3 secounds pass and the active player doesn't touch any keys switch it to thinking 
-			//The timer also gets restarted every time they touch a key 
-			clearTimeout(typingTimer);
-
-			typingTimer = setTimeout(function(){
-				
-				if(currentPlayer == 1){
-					document.getElementById("player1-status").textContent = "Thinking...";
-				}
-				else{
-					document.getElementById("player2-status").textContent = "Thinking...";
-				}
-		
-			}, 3000);
-		}
+		}, 3000);
 	});
-}
 
 updateTurnDisplay();
 
