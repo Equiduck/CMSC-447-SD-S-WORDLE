@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/StartScreen.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,32 +25,36 @@
   </head>
 
     <main>  
+      <div class="container">  
+        <header>
+          <nav>
+            <ul>
+              <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a> 
+              <a href="history.html"><i class="fa fa-fw fa-history"></i> </a> 
+              <a href="#"><i class="fa fa-fw fa-cog"></i> </a> 
+            </ul>
+          </nav>
+        </header>
+        
+        <div class = "centeredItems">
+          
+          <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
+          <h1><b>Two-Player Wordle</b></h1>
+          <h2>Wordle with a little twist...</h2>
 
-        <div class="container">  
-           
-
-                <div class = "centeredItems">
-
-                    <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
-                    <h1><b>Two-Player Wordle</b></h1>
-                    <h2>Wordle with a little twist...</h2>
-
-                    
-
-                    <div type = "submit" class="buttons">
-                        <a href = "#" class = "playButton" id = "playButton"> Play</a>
-                        <a href = "#" class = "averageButton"> Log in</a>
-                        <a href = "#" class = "averageButton"> Sign up</a>
-                    </div>
-
-                    <p id = "currentDate"></p>
-
-                </div>
+          <ul>
+            <a href="index.html" class="login-button">
+              Play</a>
+            <a href="login.html" class="login-button">
+              Login</a>
+            <a href="signin.html" class="login-button">
+              Sign up</a>
+            </ul>
                 
-        </div>  
+          
+          <p id = "currentDate"></p>
 
-        <div class = "popup" id="popup">
-
+          <div class = "popup" id="popup">
             <div class = "top">
                 <a href = "#" class = "exitButton" id = "exitButton"> &times</a>
             </div>
@@ -59,7 +64,6 @@
 
             <a href = "index.html" class = "averageButton"> English</a>
             <a href = "index.html" class = "averageButton"> Spanish</a>
-
         </div>
 
         <script src = "/javascript/StartScreen.js"></script>
