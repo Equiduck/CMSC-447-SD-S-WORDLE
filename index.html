@@ -16,20 +16,29 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/feedback.css"/>
+    <link rel="stylesheet" href="./styles/end-screen.css"/>
   </head>
 
   <body>
     <!-- Sprint 1: the separator bar (widget slots still empty) and the 6x5
         grid drawn by board.js. No keyboard or input handling yet. -->
 
-        <header>
-            <nav>
+        <header class="page-header">
+            <nav aria-label="Primary">
                 <ul>
                     <li><a href="StartScreen.html">Start Screen</a></li>
                     <li><a href="index.html" class="active">Game</a></li>
                     <li><a href="history.html">History</a></li>
                 </ul>
             </nav>
+            <button
+              class="new-game-control"
+              id="top-new-game-button"
+              type="button"
+              aria-label="Start a new game"
+            >
+              New Game
+            </button>
         </header>
          
     <div class="app">
@@ -75,7 +84,6 @@
     <script src="./javascript/board.js"></script>
     <script src="./javascript/words.js"></script>
     <script src="./javascript/cpu.js"></script>
-    <script src="./javascript/cpu-demo.js"></script>
     <script src="./javascript/game-colors.js"></script>
 
     <div class = "keyboard-Container">
@@ -120,6 +128,29 @@
 
     </div>
 
+    <div class="game-toast" id="game-toast" role="status" aria-live="polite"></div>
+
+    <div
+      class="game-result"
+      id="game-result"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="game-result-title"
+      aria-describedby="game-result-message"
+      hidden
+    >
+      <div class="game-result__panel">
+        <div class="game-result__icon" id="game-result-icon" aria-hidden="true"></div>
+        <h2 class="game-result__title" id="game-result-title"></h2>
+        <p class="game-result__message" id="game-result-message"></p>
+        <p class="game-result__answer" id="game-result-answer"></p>
+        <button class="game-result__button" id="new-game-button" type="button">
+          New Game
+        </button>
+      </div>
+    </div>
+
+    <script src="./javascript/end-screen.js"></script>
     <script src="./javascript/key-input.js"></script>
   </body>
 </html>

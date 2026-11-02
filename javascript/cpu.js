@@ -1,15 +1,20 @@
-// Local CPU opponent. It owns a dictionary (words.js), picks the target for a
-// new game, and chooses guesses that stay consistent with the feedback it has
-// seen. Stand-in for the server-side engine Teams A and B will own.
+//Local CPU opponent for testing.
 (function (global) {
   "use strict";
 
   var words = global.WORDLE_WORDS || { answers: [], allowed: [] };
-  var ANSWERS = words.answers;
-  var ALLOWED = words.allowed;
+  var ENGLISH = { answers: words.answers || [], allowed: words.allowed || [] };
+  var SPANISH = words.spanish || ENGLISH;
 
-  // Scraped Wordle semantics: greens first, then yellows that consume only the
-  // still-unclaimed copies of a letter.
+  function normalizeLanguage(language) {
+    return language === "spanish" || language === "es" ? "spanish" : "english";
+  }
+
+  function dictionaryFor(language) {
+    return normalizeLanguage(language) === "spanish" ? SPANISH : ENGLISH;
+  }
+
+  //Green first, then yellow using only remaining letters.
   function evaluate(guess, answer) {
     var result = [];
     var guessUsed = [];
@@ -41,20 +46,24 @@
     return result;
   }
 
-  function isValidGuess(word) {
-    return ANSWERS.indexOf(word) !== -1 || ALLOWED.indexOf(word) !== -1;
+  function isValidGuess(word, language) {
+    var dictionary = dictionaryFor(language);
+    return dictionary.answers.indexOf(word) !== -1 || dictionary.allowed.indexOf(word) !== -1;
   }
 
-  function createGame() {
+  function createGame(language) {
+    var selectedLanguage = normalizeLanguage(language);
+    var dictionary = dictionaryFor(selectedLanguage);
     return {
-      answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
+      answer: dictionary.answers[Math.floor(Math.random() * dictionary.answers.length)],
       guesses: [],
       feedback: [],
+      language: selectedLanguage,
       used: {},
     };
   }
 
-  // Records a guess (by either player) and returns its feedback.
+  //Record a guess and return its feedback.
   function record(game, guess) {
     var feedback = evaluate(guess, game.answer);
     game.guesses.push(guess);
@@ -63,61 +72,40 @@
     return feedback;
   }
 
-  function letterCounts(word) {
-    var counts = {};
-    for (var i = 0; i < word.length; i += 1) {
-      counts[word[i]] = (counts[word[i]] || 0) + 1;
-    }
-    return counts;
-  }
-
-  // True when a candidate could have produced this feedback.
+  //Recreate feedback to validate a possible answer.
   function matches(candidate, guess, feedback) {
+    var actual = evaluate(guess, candidate);
     var i;
     for (i = 0; i < guess.length; i += 1) {
-      if (feedback[i] === "correct" && candidate[i] !== guess[i]) return false;
-    }
-    var counts = letterCounts(candidate);
-    var info = {};
-    for (i = 0; i < guess.length; i += 1) {
-      var letter = guess[i];
-      info[letter] = info[letter] || { correct: 0, present: 0, absent: 0 };
-      info[letter][feedback[i]] += 1;
-    }
-    for (var key in info) {
-      if (!Object.prototype.hasOwnProperty.call(info, key)) continue;
-      var matched = info[key].correct + info[key].present;
-      var have = counts[key] || 0;
-      if (matched === 0 && have !== 0) return false;
-      if (matched > 0 && info[key].absent > 0 && have !== matched) return false;
-      if (matched > 0 && info[key].absent === 0 && have < matched) return false;
+      if (actual[i] !== feedback[i]) return false;
     }
     return true;
   }
 
-  function consistent(candidate, game) {
+  function isConsistent(candidate, game) {
     for (var i = 0; i < game.guesses.length; i += 1) {
       if (!matches(candidate, game.guesses[i], game.feedback[i])) return false;
     }
     return true;
   }
 
-  // Prefers words that are also possible answers, then any dictionary word.
+  //Prefer possible answers, then other allowed words.
   function chooseGuess(game) {
-    var pool = ANSWERS.filter(function (word) {
-      return !game.used[word] && consistent(word, game);
+    var dictionary = dictionaryFor(game.language);
+    var pool = dictionary.answers.filter(function (word) {
+      return !game.used[word] && isConsistent(word, game);
     });
     if (pool.length === 0) {
-      pool = ALLOWED.filter(function (word) {
-        return !game.used[word] && consistent(word, game);
+      pool = dictionary.allowed.filter(function (word) {
+        return !game.used[word] && isConsistent(word, game);
       });
     }
     if (pool.length === 0) {
-      pool = ALLOWED.filter(function (word) {
+      pool = dictionary.allowed.filter(function (word) {
         return !game.used[word];
       });
     }
-    if (pool.length === 0) pool = ANSWERS;
+    if (pool.length === 0) pool = dictionary.answers;
     var guess = pool[Math.floor(Math.random() * pool.length)];
     game.used[guess] = true;
     return guess;
@@ -127,6 +115,7 @@
     createGame: createGame,
     chooseGuess: chooseGuess,
     evaluate: evaluate,
+    isConsistent: isConsistent,
     isValidGuess: isValidGuess,
     record: record,
   };

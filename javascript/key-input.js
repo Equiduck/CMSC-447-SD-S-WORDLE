@@ -10,9 +10,6 @@
   var locked = false;
   var waiting = false;
 
-  // The self-play demo paints the board itself; human input stays off there.
-  if (/[?&]cpu=demo/.test(window.location.search)) return;
-
   for (var r = 0; r < boardRows.length; r += 1) rows.push([]);
 
   function ordinal(value) {
@@ -31,8 +28,10 @@
     var letters = rows[index] || [];
     for (var i = 0; i < tiles.length; i += 1) {
       var letter = letters[i] || "";
+      var previousLetter = tiles[i].textContent.toLowerCase();
       tiles[i].textContent = letter.toUpperCase();
       tiles[i].setAttribute("data-state", letter ? "tbd" : "empty");
+      if (letter && letter !== previousLetter) tiles[i].setAttribute("data-animation", "pop");
       tiles[i].setAttribute(
         "aria-label",
         ordinal(i + 1) + " letter, " + (letter ? letter.toUpperCase() : "empty"),
@@ -42,7 +41,7 @@
 
   function add(letter) {
     if (locked || waiting) return;
-    // A full row waits for Enter; extra letters are ignored.
+    //Full rows wait for Enter.
     if (rows[rowIndex].length >= COLUMNS) return;
     rows[rowIndex].push(letter);
     render(rowIndex);
@@ -50,7 +49,7 @@
 
   function remove() {
     if (locked || waiting) return;
-    // Submitted rows stay locked, so Backspace only edits the current one.
+    //Only edit the current row.
     if (rows[rowIndex].length === 0) return;
     rows[rowIndex].pop();
     render(rowIndex);
@@ -58,12 +57,36 @@
 
   function submit() {
     if (locked || waiting) return;
-    // Enter only submits a complete five-letter row.
-    if (rows[rowIndex].length !== COLUMNS) return;
+    var language = document.body.dataset.wordLanguage === "spanish" ? "spanish" : "english";
+    var row = boardRows[rowIndex];
+    //Submit only complete, valid rows.
+    if (rows[rowIndex].length !== COLUMNS) {
+      row.setAttribute("data-animation", "invalid");
+      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
+        detail: {
+          message: language === "spanish"
+            ? "No hay suficientes letras para una palabra."
+            : "Not enough letters",
+        },
+      }));
+      return;
+    }
+    var word = rows[rowIndex].join("");
+    if (!window.WordleCpu || !window.WordleCpu.isValidGuess(word, language)) {
+      row.setAttribute("data-animation", "invalid");
+      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
+        detail: {
+          message: language === "spanish"
+            ? "La palabra no está en el diccionario."
+            : "Not in word list",
+        },
+      }));
+      return;
+    }
     document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
-      detail: { rowIndex: rowIndex, word: rows[rowIndex].join("") },
+      detail: { rowIndex: rowIndex, word: word },
     }));
-    // The CPU answers on the next line; input resumes when it is done.
+    //Unlock input on the next playable row.
     waiting = true;
   }
 
@@ -95,6 +118,20 @@
     else if (label === "enter") submit();
     else if (/^[a-z]$/.test(label)) add(label);
   });
+
+  var board = document.getElementById("board");
+  if (board) {
+    board.addEventListener("animationend", function (event) {
+      if (event.animationName === "wordle-tile-pop" &&
+          event.target.getAttribute("data-animation") === "pop") {
+        event.target.setAttribute("data-animation", "idle");
+      }
+      if (event.animationName === "wordle-row-shake" &&
+          event.target.getAttribute("data-animation") === "invalid") {
+        event.target.removeAttribute("data-animation");
+      }
+    });
+  }
 
   render(rowIndex);
 })();
