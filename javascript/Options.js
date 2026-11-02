@@ -13,3 +13,21 @@ const toggle = () => {
 //Let button presses function
 playButton.addEventListener('click', toggle);
 exitButton.addEventListener('click', toggle);
+
+
+//Function to activate dark mode when checked
+function myFunction() {
+
+    var checkbox = document.getElementById("darkTheme");
+
+    if (checkbox.checked == true) {
+    
+        document.body.classList.add("dark-mode");
+
+    }
+    else {
+        document.body.classList.remove("dark-mode");
+       
+    }
+
+}
