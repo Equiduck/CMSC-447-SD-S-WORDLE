@@ -16,7 +16,7 @@ exitButton.addEventListener('click', toggle);
 
 
 //Function to activate dark mode when checked
-function myFunction() {
+function darkMode() {
 
     var checkbox = document.getElementById("darkTheme");
 
@@ -28,6 +28,21 @@ function myFunction() {
     else {
         document.body.classList.remove("dark-mode");
        
+    }
+
+}
+
+//Function to activate high contrast mode when checked
+function highContrastMode() {
+
+    var checkbox = document.getElementById("highContrast");
+
+    if (checkbox.checked == true) {
+
+        document.body.classList.add("high-contrast-mode");
+    }
+    else {
+        document.body.classList.remove("high-contrast-mode");
     }
 
 }

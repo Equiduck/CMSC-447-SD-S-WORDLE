@@ -1,3 +1,4 @@
+
 // Letters and Delete for the playing row
 (function () {
   "use strict";

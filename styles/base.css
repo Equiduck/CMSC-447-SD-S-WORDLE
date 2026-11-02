@@ -269,4 +269,10 @@ input:checked + .slider:before {
 }
 
 
+.high-contrast-mode input:checked + .slider {
+  background-color: #f5793a;
+  
+}
+
+
 
