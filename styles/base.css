@@ -15,7 +15,9 @@ body,
 nav ul {
   list-style: none;
   display: flex;
-  gap: 2rem
+  gap: 2rem;
+  float: right;
+  padding-right: 25px;
 }
 
 nav a {

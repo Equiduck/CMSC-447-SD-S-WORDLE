@@ -1,4 +1,3 @@
-
 //Create variables for popup
 const container = document.querySelector('.container');
 const popup = document.querySelector('.popup');

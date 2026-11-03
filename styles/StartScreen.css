@@ -8,7 +8,6 @@
 }
 
 .playButton {
-
     background-color: black;
     color: white;
     border: 1px solid black;
@@ -23,7 +22,6 @@
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-
 }
 
 .popup {
@@ -139,7 +137,7 @@ h2 {
     text-align: right;
 }
 
-.login-button{
+.buttons{
     background-color: #dbd6d6;
     border:#000000;
     border-style: double;
@@ -153,10 +151,7 @@ h2 {
 	border-radius: 30px;
 }
 
-.login-button:hover{
+.buttons:hover{
     background-color: #000000;
     color: white;
 }
-
-
-

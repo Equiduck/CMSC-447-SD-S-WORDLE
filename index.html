@@ -33,7 +33,6 @@
     </header>
          
     <div class="app">
-
       <h1>Shared-State Wordle</h1>
 
        <!--turn indicator -->
@@ -46,30 +45,28 @@
         <div class="player" id="player1">
           <h2 id="player1-name">Player 1</h2>
           <p class="status" id="player1-status">Thinking...</p>
-      </div>
+    </div>
 
-      <div class="app">
-        
+    <div class="app">
         <header class="app__bar" role="banner">
           <div class="app__slot app__slot--start" data-slot="start"></div>
           <div class="app__slot app__slot--center" data-slot="center"></div>
           <div class="app__slot app__slot--end" data-slot="end"></div>
-      </header>
+        </header>
 
         <main class="app__main">
           <div class="board-container">
             <div class="board" id="board" aria-label="Shared board"></div>
-        </div>
-      </main>
+          </div>
+        </main>
     </div>
 
 
        <!-- Player 2 -->
-        <div class="player" id="player2">
-          <h2 id="player2-name">Player 2</h2>
-          <p class="status" id="player2-status">Waiting...</p>
-        </div>
-
+      <div class="player" id="player2">
+        <h2 id="player2-name">Player 2</h2>
+        <p class="status" id="player2-status">Waiting...</p>
+      </div>
     </div>
 
     <script src="./javascript/board.js"></script>

@@ -12,51 +12,45 @@
     <!-- No build step: open this file directly, or serve the folder. -->
     <link rel="stylesheet" href="./styles/tokens.css" />
     <link rel="stylesheet" href="./styles/base.css" />
-    <link rel="stylesheet" href="./styles/board.css" />
-    <link rel="stylesheet" href="./styles/keyboard.css"/>
-    <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/StartScreen.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption:ital@0;1&display=swap" rel="stylesheet">
-
   </head>
 
-    <main>  
-      <div class="container">  
-        <header>
-          <nav>
-            <ul>
-              <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a> 
-              <a href="history.html"><i class="fa fa-fw fa-history"></i> </a> 
-              <a href="#"><i class="fa fa-fw fa-cog"></i> </a> 
-            </ul>
-          </nav>
-        </header>
-        
-        <div class = "centeredItems">
-          
-          <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
-          <h1><b>Two-Player Wordle</b></h1>
-          <h2>Wordle with a little twist...</h2>
+  <body>  
+    <header>
+      <nav>
+        <ul>
+          <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a> 
+          <a href="history.html"><i class="fa fa-fw fa-history"></i> </a> 
+          <a href="#"><i class="fa fa-fw fa-cog"></i> </a> 
+        </ul>
+      </nav>
+    </header>
 
-          <ul>
-            <a href="index.html" class="login-button">
-              Play</a>
-            <a href="login.html" class="login-button">
-              Login</a>
-            <a href="signin.html" class="login-button">
-              Sign up</a>
-            </ul>
-                
+    <div class="container">  
+      <div class = "centeredItems">
+        <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
+        <h1><b>Two-Player Wordle</b></h1>
+        <h2>Wordle with a little twist...</h2>
+
+        <ul>
+          <a href="index.html" class="buttons">
+            Play</a>
+          <a href="login.html" class="buttons">
+            Login</a>
+          <a href="signin.html" class="buttons">
+            Sign up</a>
+          </ul>
           
           <p id = "currentDate"></p>
 
           <div class = "popup" id="popup">
             <div class = "top">
-                <a href = "#" class = "exitButton" id = "exitButton"> &times</a>
+              <a href = "#" class = "exitButton" id = "exitButton"> &times</a>
             </div>
 
             <h1> Language Selector</h1>
@@ -64,9 +58,9 @@
 
             <a href = "index.html" class = "averageButton"> English</a>
             <a href = "index.html" class = "averageButton"> Spanish</a>
-        </div>
-
+          </div>
         <script src = "/javascript/StartScreen.js"></script>
-
-    </main>  
+      </div>
+    </div>
+  </body>  
 </html>
