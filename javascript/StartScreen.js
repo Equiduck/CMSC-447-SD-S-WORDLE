@@ -4,21 +4,12 @@ const popup = document.querySelector('.popup');
 const playButton = document.getElementById('playButton');
 const exitButton = document.getElementById('exitButton');
 
-function openLogin() {
-    document.getElementById("loginForm").style.display = "block";
-}
-
-function closeLogin() {
-    document.getElementById("loginForm").style.display = "none";
-}
-
-function openSignUp(){
-    document.getElementById("signupForm").style.display = "block";
-}
-
-function closeSignUp(){
-    document.getElementById("signupForm").style.display = "none";
-}
+function openLogin() {document.getElementById("loginForm").style.display = "block";}
+function closeLogin() {document.getElementById("loginForm").style.display = "none";}
+function openSignUp() {document.getElementById("signupForm").style.display = "block";}
+function closeSignUp() {document.getElementById("signupForm").style.display = "none";}
+function openLang() {document.getElementById("langOpt").style.display = "block"}
+function closeLang() {document.getElementById("langOpt").style.display = "none"}
 
 //Allow popup to appear
 const toggle = () => {
