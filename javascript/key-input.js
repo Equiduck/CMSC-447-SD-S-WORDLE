@@ -39,10 +39,63 @@
     render();
   }
 
+  //Function for submitting the current five-letter guess
+  function submitGuess(){
+
+    //wont submit a guess if it's not long enough
+    if(letters.length !== COLUMNS){
+      alert("Please enter a five-letter word.");
+      return;
+    }
+
+    //converting the letter array into a word
+    var guess = letters.join("").toUpperCase();
+
+    //temporary testing  until middleware respounds
+    console.log("Submitting guess:", guess);
+
+    //Temporary response using team B's JSON format. Will be removed in final product 
+    const response ={
+      response_code: 0,
+      feedback: "bgggb"
+    };
+
+    if(response.response_code === 0){
+      console.log("Guess accepted: ", guess);
+      console.log("Feedback:", response.feedback);
+
+      //update player turn if accepted
+      advanceTurn();
+    }
+
+    //Alerts for handling error response codes
+    else if(response.response_code === -1){
+      alert("Invalid request format.");
+    }
+
+    else if(response.response_code === -2){
+      alert("Invalid guess. Please try again.");
+    }
+
+    else if(response.response_code === -3){
+      alert("Unble to validate the answer.");
+    }
+
+    else{
+      alert("An unexpected error occured.");
+    }
+  }
+
   document.addEventListener("keydown", function (event) {
     // Ignore held keys
     if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Backspace") remove();
+
+    //Call the submit guess function on enter click
+    else if(event.key == "Enter"){
+      submitGuess();
+    }
+
     else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
   });
 
@@ -51,6 +104,12 @@
     if (!button) return;
     var label = button.textContent.trim().toLowerCase();
     if (label === "delete") remove();
+
+    //submitting guess so call the function
+    else if(label == "enter"){
+      submitGuess();
+    }
+    
     else if (/^[a-z]$/.test(label)) add(label);
   });
 
