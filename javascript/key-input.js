@@ -5,8 +5,8 @@
   var COLUMNS = 5;
   var ORDINALS = ["th", "st", "nd", "rd"];
   var letters = [];
-  var row = document.querySelectorAll(".board .row")[0];
-  var tiles = row ? row.querySelectorAll('[data-testid="tile"]') : [];
+  var boardRows = document.querySelectorAll(".board .row");
+  var currentRowIndex = 0;
 
   function ordinal(value) {
     var remainder = value % 100;
@@ -14,7 +14,13 @@
     return value + suffix;
   }
 
+  function currentTiles() {
+    var row = boardRows[currentRowIndex];
+    return row ? row.querySelectorAll('[data-testid="tile"]') : [];
+  }
+
   function render() {
+    var tiles = currentTiles();
     for (var i = 0; i < tiles.length; i += 1) {
       var letter = letters[i] || "";
       tiles[i].textContent = letter.toUpperCase();
@@ -27,6 +33,7 @@
   }
 
   function add(letter) {
+    if (currentRowIndex >= boardRows.length) return;
     // Overflow prevention
     if (letters.length >= COLUMNS) return;
     letters.push(letter);
@@ -34,6 +41,7 @@
   }
 
   function remove() {
+    if (currentRowIndex >= boardRows.length) return;
     if (letters.length === 0) return;
     letters.pop();
     render();
@@ -64,8 +72,18 @@
       console.log("Guess accepted: ", guess);
       console.log("Feedback:", response.feedback);
 
-      //update player turn if accepted
-      advanceTurn();
+      document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
+        detail: {
+          rowIndex: currentRowIndex,
+          word: guess.toLowerCase(),
+        },
+      }));
+
+      //Only accepted guesses unlock and move to the next row.
+      if (typeof advanceTurn === "function") advanceTurn();
+      currentRowIndex += 1;
+      letters = [];
+      render();
     }
 
     //Alerts for handling error response codes
