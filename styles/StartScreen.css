@@ -1,4 +1,3 @@
-
 .login-popup {
     display: none;
     transition: 0.5s;
@@ -75,8 +74,8 @@
     display: inline-block;
 }
 
-.popup {
-    opacity: 0;
+.lang-popup {
+    display: none;
     transition: 0.5s;
     position: fixed;
     top: 40%;
@@ -89,17 +88,16 @@
     border: 1px solid black;
     border-radius: 5px;
     background-color: #e3e3e1;
-    visibility: hidden;
     text-align: center;
     justify-content: center;
     margin: 0;
 }
 
-.popup h2 {
+.lang-popup h2 {
     font-size: 15px;
 }
 
-.popup .active {
+.lang-popup .active {
     top: 50%;
     visibility: visible;
     opacity: 1;
@@ -173,6 +171,11 @@ h2 {
     filter: blur(20px);
 }
 
+.averageButton:hover{
+    background-color: #000000;
+    color: white;
+}
+
 .container {
     display: flex;
     align-items: center;
@@ -200,6 +203,11 @@ button{
 	margin: 4px 8px;
 	cursor: pointer;
 	border-radius: 30px;
+}
+
+button:hover{
+    background-color: #000000;
+    color: white;
 }
 
 button:hover{
