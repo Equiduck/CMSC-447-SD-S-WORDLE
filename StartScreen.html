@@ -39,9 +39,40 @@
 
         <ul>
           <button onclick="location.href='index.html'">Play</button>
-          <button onclick="location.href='login.html'">Log in</button>
-          <button onclick="location.href='signin.html'">Sign in</button>
+          <button onclick="openLogin()">Log in</button>
+          <button onclick="openSignUp()">Sign up</button>
         </ul>
+
+        <div class="login-popup" id="loginForm">
+          <form class="login-container">
+            <h1>Login</h1>
+
+            <label for="user">Username</label>
+            <input type="text" placeholder="Enter Username" name="user" required>
+
+            <label for="psw">Password</label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit" >Login</button>
+            <button onclick="closeLogin()">Close</button>
+          </form>
+        </div>
+
+        <div class="signup-popup" id="signupForm">
+          <form class="signup-container">
+            <h1>Sign up</h1>
+
+            <label for="user">Username</label>
+            <input type="text" placeholder="Enter Username" name="user" required>
+
+            <label for="psw">Password</label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit" >Sign up</button>
+            <button onclick="closeSignUp()">Close</button>
+          </form>
+        </div>
+
 
         <div class="popup" id="popup">
           <div class = "top">
@@ -57,7 +88,7 @@
 
         <p id = "currentDate"></p>
 
-        <script src = "/javascript/StartScreen.js"></script>
+        <script src = "javascript/StartScreen.js"></script>
       </div>
     </div>
   </body>  
