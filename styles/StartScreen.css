@@ -48,6 +48,13 @@
     font-size: 15px;
 }
 
+.popup .active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
 .exitButton {
     background: #e3e3e1;
     border-radius: 0px;
@@ -115,13 +122,6 @@ h2 {
     filter: blur(20px);
 }
 
-.popup.active {
-    top: 50%;
-    visibility: visible;
-    opacity: 1;
-    transition: 0.5s;
-}
-
 .container {
     display: flex;
     align-items: center;
@@ -137,7 +137,7 @@ h2 {
     text-align: right;
 }
 
-.buttons{
+button{
     background-color: #dbd6d6;
     border:#000000;
     border-style: double;
@@ -151,7 +151,7 @@ h2 {
 	border-radius: 30px;
 }
 
-.buttons:hover{
+button:hover{
     background-color: #000000;
     color: white;
 }
