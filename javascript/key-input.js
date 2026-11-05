@@ -1,3 +1,4 @@
+
 // Letters and Delete for the playing row
 (function () {
   "use strict";
@@ -87,18 +88,27 @@
   }
 
   document.addEventListener("keydown", function (event) {
-    // Ignore held keys
-    if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
-    if (event.key === "Backspace") remove();
+    
+    //Check if keyboard has been disabled
+    var checkbox = document.getElementById("keyboardElement");
 
-    //Call the submit guess function on enter click
-    else if(event.key == "Enter"){
-      submitGuess();
+    // If disabled, ignore key presses
+    if (checkbox.checked == true) {
+      return;
     }
+    // If not disabled, allow key presses
+    else {
 
-    else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
+      // Ignore held keys
+      if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (event.key === "Backspace") remove();
+      else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
+
+    }
+    
   });
 
+  
   document.addEventListener("click", function (event) {
     var button = event.target.closest(".keyboard-Container button");
     if (!button) return;
