@@ -140,7 +140,9 @@
     var position = 0;
     function typeNextLetter() {
       if (finished) return;
-      if (typeof setActivePlayerTyping === "function") setActivePlayerTyping();
+      if (typeof KeyboardEvent === "function") {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: word[position] }));
+      }
       var tile = tiles[position];
       tile.textContent = word[position].toUpperCase();
       tile.setAttribute("data-state", "tbd");

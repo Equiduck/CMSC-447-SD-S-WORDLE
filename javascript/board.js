@@ -56,27 +56,6 @@ function advanceTurn(){
 	updateTurnDisplay();
 }
 
-function setActivePlayerTyping(){
-	if(currentPlayer == 1){
-		document.getElementById("player1-status").textContent = "Typing...";
-		document.getElementById("player2-status").textContent = "Waiting...";
-	}
-	else{
-		document.getElementById("player2-status").textContent = "Typing...";
-		document.getElementById("player1-status").textContent = "Waiting...";
-	}
-
-	clearTimeout(typingTimer);
-	typingTimer = setTimeout(function(){
-		if(currentPlayer == 1){
-			document.getElementById("player1-status").textContent = "Thinking...";
-		}
-		else{
-			document.getElementById("player2-status").textContent = "Thinking...";
-		}
-	}, 3000);
-}
-
 function finishTurnDisplay(winner){
 	var indicator = document.getElementById("turn-indicator");
 	var heroStatus = document.getElementById("player1-status");
@@ -106,7 +85,36 @@ function finishTurnDisplay(winner){
 }
 
 document.addEventListener("keydown", function(event){
-		setActivePlayerTyping();
+
+		//Anyother key besides enter being pressed means they are typing 
+
+		if(currentPlayer == 1){
+
+			document.getElementById("player1-status").textContent = "Typing...";
+			document.getElementById("player2-status").textContent = "Waiting...";
+		}
+		else{
+			document.getElementById("player2-status").textContent = "Typing...";
+			document.getElementById("player1-status").textContent = "Waiting...";
+		}
+
+		
+
+		//Starting a 3 secound timer 
+		//If 3 secounds pass and the active player doesn't touch any keys switch it to thinking 
+		//The timer also gets restarted every time they touch a key 
+		clearTimeout(typingTimer);
+
+		typingTimer = setTimeout(function(){
+				
+			if(currentPlayer == 1){
+				document.getElementById("player1-status").textContent = "Thinking...";
+			}
+			else{
+				document.getElementById("player2-status").textContent = "Thinking...";
+			}
+		
+		}, 3000);
 	});
 
 updateTurnDisplay();
