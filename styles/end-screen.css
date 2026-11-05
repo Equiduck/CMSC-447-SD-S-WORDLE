@@ -136,6 +136,27 @@ body.game-result-open {
   outline-offset: 3px;
 }
 
+.dark-mode .game-result {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.dark-mode .game-result__panel {
+  border-color: #3a3a3c;
+  background: #121213;
+  color: #fff;
+}
+
+.dark-mode .game-result__title,
+.dark-mode .game-result__message,
+.dark-mode .game-result__answer {
+  color: #fff;
+}
+
+.dark-mode .game-result__button {
+  background: #fff;
+  color: #000;
+}
+
 @keyframes wordle-result-in {
   from {
     opacity: 0;
