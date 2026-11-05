@@ -12,84 +12,57 @@
     <!-- No build step: open this file directly, or serve the folder. -->
     <link rel="stylesheet" href="./styles/tokens.css" />
     <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="./styles/board.css" />
+    <link rel="stylesheet" href="./styles/keyboard.css"/>
+    <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/StartScreen.css"/>
-    <link rel="stylesheet" href="./styles/login.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption:ital@0;1&display=swap" rel="stylesheet">
+
   </head>
 
-  <body>  
-    <header>
-      <nav>
-        <ul>
-          <li><a href="StartScreen.html" aria-label="Start Screen"><i class="fa fa-fw fa-home" aria-hidden="true"></i></a></li>
-          <li><a href="history.html" aria-label="History"><i class="fa fa-fw fa-history" aria-hidden="true"></i></a></li>
-          <li><a href="#" id="languageButton" aria-label="Language Selector"><i class="fa fa-fw fa-cog" aria-hidden="true"></i></a></li>
-        </ul>
-      </nav>
-    </header>
+    <main>  
 
-    <div class="container">  
-      <div class = "centeredItems">
-        <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
-        <h1><b>Two-Player Wordle</b></h1>
-        <h2>Wordle with a little twist...</h2>
+        <div class="container">  
+           
 
-        <ul>
-          <button id="playButton" type="button">Play</button>
-          <button type="button" onclick="openLogin()">Log in</button>
-          <button type="button" onclick="openSignUp()">Sign up</button>
-        </ul>
+                <div class = "centeredItems">
 
-        <p id = "currentDate"></p>
-      </div>
-    </div>
+                    <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
+                    <h1><b>Two-Player Wordle</b></h1>
+                    <h2>Wordle with a little twist...</h2>
 
-    <div class="login-popup" id="loginForm">
-      <form class="login-container" onsubmit="event.preventDefault()">
-        <h1>Login</h1>
+                    
 
-        <label for="loginUser">Username</label>
-        <input id="loginUser" type="text" placeholder="Enter Username" name="user" required>
+                    <div type = "submit" class="buttons">
+                        <a href = "#" class = "playButton" id = "playButton"> Play</a>
+                        <a href = "#" class = "averageButton"> Log in</a>
+                        <a href = "#" class = "averageButton"> Sign up</a>
+                    </div>
 
-        <label for="loginPassword">Password</label>
-        <input id="loginPassword" type="password" placeholder="Enter Password" name="psw" required>
+                    <p id = "currentDate"></p>
 
-        <button type="submit">Login</button>
-        <button type="button" onclick="closeLogin()">Close</button>
-      </form>
-    </div>
+                </div>
+                
+        </div>  
 
-    <div class="signup-popup" id="signupForm">
-      <form class="signup-container" onsubmit="event.preventDefault()">
-        <h1>Sign up</h1>
+        <div class = "popup" id="popup">
 
-        <label for="signupUser">Username</label>
-        <input id="signupUser" type="text" placeholder="Enter Username" name="user" required>
+            <div class = "top">
+                <a href = "#" class = "exitButton" id = "exitButton"> &times</a>
+            </div>
 
-        <label for="signupPassword">Password</label>
-        <input id="signupPassword" type="password" placeholder="Enter Password" name="psw" required>
+            <h1 id="language-popup-title">Language Selector</h1>
+            <h2 id="language-popup-description">Please Select Your Preferred Game Language</h2>
 
-        <button type="submit">Sign up</button>
-        <button type="button" onclick="closeSignUp()">Close</button>
-      </form>
-    </div>
+            <a href = "#" class = "averageButton" data-language="en">English</a>
+            <a href = "#" class = "averageButton" data-language="es">Spanish</a>
 
-    <div class="popup" id="langOpt">
-      <div class="top">
-        <a href="#" class="exitButton" id="exitButton" aria-label="Close language selector">&times;</a>
-      </div>
+        </div>
 
-      <h1 id="language-popup-title">Language Selector</h1>
-      <h2 id="language-popup-description">Please Select Your Preferred Game Language</h2>
+        <script src = "./javascript/StartScreen.js"></script>
 
-      <a href="#" class="averageButton" data-language="en">English</a>
-      <a href="#" class="averageButton" data-language="es">Spanish</a>
-    </div>
-
-    <script src="./javascript/StartScreen.js"></script>
-  </body>  
+    </main>  
 </html>

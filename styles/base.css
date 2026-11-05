@@ -12,20 +12,10 @@ body,
   height: 100%;
 }
 
-a {
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  padding: 0.5rem 0;
-  text-decoration: none;
-  font-family: "Courier New", Courier, monospace;
-}
-
 nav ul {
   list-style: none;
   display: flex;
-  gap: 2rem;
-  float: right;
-  padding-right: 25px;
+  gap: 2rem
 }
 
 nav a {
@@ -80,19 +70,6 @@ h1 {
   font-weight: 700;
   text-align: center;
   margin-top: var(--space-2);
-}
-
-h2 {
-  font-family: "nyt-franklin", "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  text-align: center;
-}
-
-p {
-  font-family: "nyt-franklin", "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 20px;
-  text-align: center;
 }
 
 .container.active {
