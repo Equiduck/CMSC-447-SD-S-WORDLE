@@ -274,29 +274,5 @@ input:checked + .slider:before {
   
 }
 
-.game-toast {
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  z-index: 1000;
-  max-width: calc(100% - 32px);
-  padding: 16px;
-  border-radius: 4px;
-  background: #000;
-  color: #fff;
-  font-family: "nyt-franklin", "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%);
-  transition: opacity 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.game-toast[data-visible="true"] {
-  opacity: 1;
-}
-
 
 

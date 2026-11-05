@@ -6,6 +6,8 @@
 
   var ORDINALS = ["th", "st", "nd", "rd"];
   var RANK = { absent: 1, present: 2, correct: 3 };
+  var FEEDBACK_CODE = { absent: "b", present: "y", correct: "g" };
+  var FEEDBACK_STATE = { b: "absent", y: "present", g: "correct" };
   var FLIP_STAGGER_MS = 300;
   var CPU_TYPE_DELAY_MS = 180;
   var LANGUAGE_KEY = "shared-wordle-language";
@@ -44,8 +46,8 @@
   document.body.dataset.wordLanguage = language;
   document.body.dataset.playMode = playMode;
   var heroName = document.getElementById("player1-name");
-  if (playMode === "cpu" && window.WordleBoard) {
-    window.WordleBoard.updatePlayerNames({
+  if (playMode === "cpu" && typeof updatePlayerNames === "function") {
+    updatePlayerNames({
       player1: heroName ? heroName.textContent : "",
       player2: "CPU",
     });
@@ -54,26 +56,42 @@
   if (forcedAnswer && /^[a-z]{5}$/i.test(forcedAnswer)) game.answer = forcedAnswer.toLowerCase();
   var keyStates = {};
   var finished = false;
-  var toast = document.getElementById("game-toast");
-  var toastTimer;
 
-  function showToast(text) {
-    if (!toast) return;
-    clearTimeout(toastTimer);
-    toast.textContent = text;
-    toast.dataset.visible = "true";
-    toastTimer = window.setTimeout(function () {
-      toast.dataset.visible = "false";
-    }, 1500);
+  function encodeFeedback(feedback) {
+    var encoded = "";
+    for (var i = 0; i < feedback.length; i += 1) {
+      encoded += FEEDBACK_CODE[feedback[i]] || "b";
+    }
+    return encoded;
   }
 
-  function advanceBoardTurn() {
-    if (window.WordleBoard) window.WordleBoard.advanceTurn();
+  function decodeFeedback(feedback) {
+    if (Array.isArray(feedback)) return feedback;
+    if (typeof feedback !== "string" || feedback.length !== 5) return null;
+
+    var states = [];
+    for (var i = 0; i < feedback.length; i += 1) {
+      var state = FEEDBACK_STATE[feedback[i]];
+      if (!state) return null;
+      states.push(state);
+    }
+    return states;
   }
 
-  function finishBoardTurn(winner) {
-    if (window.WordleBoard) window.WordleBoard.finishTurnDisplay(winner);
+  function submitGameGuess(word) {
+    if (!window.WordleCpu.isValidGuess(word, language)) {
+      return { response_code: -2, feedback: "bgggb" };
+    }
+
+    return {
+      response_code: 0,
+      feedback: encodeFeedback(window.WordleCpu.record(game, word)),
+    };
   }
+
+  window.WordleGame = {
+    submitGuess: submitGameGuess,
+  };
 
   function ordinal(value) {
     var remainder = value % 100;
@@ -122,6 +140,7 @@
     var position = 0;
     function typeNextLetter() {
       if (finished) return;
+      if (typeof setActivePlayerTyping === "function") setActivePlayerTyping();
       var tile = tiles[position];
       tile.textContent = word[position].toUpperCase();
       tile.setAttribute("data-state", "tbd");
@@ -145,6 +164,15 @@
 
   function bounceWinningRow(index, onComplete) {
     var wrappers = rows[index].querySelectorAll(".tile-wrapper");
+    var completed = false;
+
+    function complete() {
+      if (completed) return;
+      completed = true;
+      if (onComplete) onComplete();
+    }
+
+    window.setTimeout(complete, 1000 + wrappers.length * 100);
 
     for (var i = 0; i < wrappers.length; i += 1) {
       var wrapper = wrappers[i];
@@ -155,7 +183,7 @@
         current.removeAttribute("data-animation");
         current.style.animationDelay = "";
         if (Array.prototype.indexOf.call(wrappers, current) === wrappers.length - 1) {
-          onComplete();
+          complete();
         }
       });
       wrapper.setAttribute("data-animation", "win");
@@ -167,16 +195,23 @@
     var reducedMotion = window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var remaining = tiles.length;
+    var completed = false;
 
-    function completeTile() {
-      remaining -= 1;
-      if (remaining > 0) return;
+    function completeRow() {
+      if (completed) return;
+      completed = true;
       paintKeys();
       if (word === game.answer && !reducedMotion) {
         bounceWinningRow(index, onComplete);
       } else if (onComplete) {
         onComplete();
       }
+    }
+
+    function completeTile() {
+      remaining -= 1;
+      if (remaining > 0) return;
+      completeRow();
     }
 
     for (var i = 0; i < tiles.length; i += 1) {
@@ -208,11 +243,23 @@
       });
       tiles[i].setAttribute("data-animation", "flip-in");
     }
+
+    if (!reducedMotion) {
+      window.setTimeout(function () {
+        if (completed) return;
+        for (var i = 0; i < tiles.length; i += 1) {
+          if (tiles[i].getAttribute("data-state") === "tbd") {
+            finishTile(tiles[i], word[i], feedback[i], i);
+          }
+        }
+        completeRow();
+      }, FLIP_STAGGER_MS * tiles.length + 1000);
+    }
   }
 
   function finish(winner) {
     finished = true;
-    finishBoardTurn(winner);
+    finishTurnDisplay(winner);
     document.dispatchEvent(new CustomEvent("wordle:gameover", {
       detail: {
         answer: game.answer,
@@ -226,7 +273,8 @@
   document.addEventListener("wordle:rowcomplete", function (event) {
     if (finished) return;
     var detail = event.detail;
-    var feedback = window.WordleCpu.record(game, detail.word);
+    var feedback = detail.response && decodeFeedback(detail.response.feedback);
+    if (!feedback) feedback = window.WordleCpu.record(game, detail.word);
     paintRow(detail.rowIndex, detail.word, feedback, function () {
       if (detail.word === game.answer) {
         finish("human");
@@ -238,7 +286,6 @@
       }
 
       if (playMode === "human") {
-        advanceBoardTurn();
         document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
           detail: { nextRow: detail.rowIndex + 1 },
         }));
@@ -246,11 +293,15 @@
       }
 
       //Wait for CPU.
-      advanceBoardTurn();
       window.setTimeout(function () {
         if (finished) return;
         var cpuGuess = window.WordleCpu.chooseGuess(game);
-        var cpuFeedback = window.WordleCpu.record(game, cpuGuess);
+        var cpuResponse = submitGameGuess(cpuGuess);
+        var cpuFeedback = decodeFeedback(cpuResponse.feedback);
+        if (cpuResponse.response_code !== 0 || !cpuFeedback) {
+          finish("none");
+          return;
+        }
         var cpuRow = detail.rowIndex + 1;
         typeWord(cpuRow, cpuGuess, function () {
           paintRow(cpuRow, cpuGuess, cpuFeedback, function () {
@@ -262,7 +313,7 @@
               finish("none");
               return;
             }
-            advanceBoardTurn();
+            advanceTurn();
             document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
               detail: { nextRow: cpuRow + 1 },
             }));
@@ -270,9 +321,5 @@
         });
       }, 700);
     });
-  });
-
-  document.addEventListener("wordle:invalidguess", function (event) {
-    if (event.detail && event.detail.message) showToast(event.detail.message);
   });
 })();

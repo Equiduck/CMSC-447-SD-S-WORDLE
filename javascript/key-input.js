@@ -56,64 +56,62 @@
     render(rowIndex);
   }
 
-  function rejectGuess(row, message) {
-    row.setAttribute("data-animation", "invalid");
-    document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
-      detail: { message: message },
-    }));
-  }
-
+  //Function for submitting the current five-letter guess
   function submitGuess() {
     if (locked || waiting) return;
-    var language = document.body.dataset.wordLanguage === "spanish" ? "spanish" : "english";
-    var row = boardRows[rowIndex];
+
+    //wont submit a guess if it's not long enough
+    if (rows[rowIndex].length !== COLUMNS) {
+      alert("Please enter a five-letter word.");
+      return;
+    }
+
+    //converting the letter array into a word
     var guess = rows[rowIndex].join("").toUpperCase();
-    var response = {
+
+    //temporary testing until middleware responds
+    //Temporary response using Team B's JSON format. Will be removed in final product.
+    const response = {
       response_code: 0,
       feedback: "bgggb",
     };
 
-    //Convert the letter array into a word.
-    if (rows[rowIndex].length !== COLUMNS) {
-      response.response_code = -1;
-    }
-
     if (response.response_code === 0) {
-      if (!window.WordleCpu) {
+      if (!window.WordleGame || typeof window.WordleGame.submitGuess !== "function") {
         response.response_code = -3;
-      } else if (!window.WordleCpu.isValidGuess(guess.toLowerCase(), language)) {
-        response.response_code = -2;
+      } else {
+        var gameResponse = window.WordleGame.submitGuess(guess.toLowerCase());
+        response.response_code = gameResponse.response_code;
+        response.feedback = gameResponse.feedback;
       }
     }
 
     if (response.response_code === 0) {
-      console.log("Guess accepted:", guess);
+      console.log("Guess accepted: ", guess);
       console.log("Feedback:", response.feedback);
+
+      //update player turn if accepted
+      waiting = true;
+      advanceTurn();
       document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
         detail: {
           rowIndex: rowIndex,
           word: guess.toLowerCase(),
           feedback: response.feedback,
+          response: response,
         },
       }));
-      //Move to next row after an accepted guess.
-      waiting = true;
-    } else if (response.response_code === -1) {
-      rejectGuess(row, language === "spanish"
-        ? "No hay suficientes letras para una palabra."
-        : "Not enough letters");
+    }
+
+    //Alerts for handling error response codes
+    else if (response.response_code === -1) {
+      alert("Invalid request format.");
     } else if (response.response_code === -2) {
-      rejectGuess(row, language === "spanish"
-        ? "La palabra no está en el diccionario."
-        : "Not in word list");
+      alert("Invalid guess. Please try again.");
     } else if (response.response_code === -3) {
-      rejectGuess(row, language === "spanish"
-        ? "No se pudo validar la respuesta."
-        : "Unable to validate the answer.");
+      alert("Unble to validate the answer.");
     } else {
-      rejectGuess(row, language === "spanish"
-        ? "Ocurrió un error inesperado."
-        : "An unexpected error occurred.");
+      alert("An unexpected error occured.");
     }
   }
 
