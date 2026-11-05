@@ -55,6 +55,8 @@
   background-color: var(--color-tone-7);
   border: 2px solid var(--color-tone-3);
   color: var(--color-tone-1);
+  animation-name: wordle-tile-pop;
+  animation-duration: 100ms;
 }
 
 .dark-mode .tile[data-state="tbd"] {

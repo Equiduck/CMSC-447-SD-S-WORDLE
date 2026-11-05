@@ -85,7 +85,7 @@ playChoices.forEach((choice) => {
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const today = new Date();
 const year = today.getFullYear();
-let day = today.getDate();
+const day = today.getDate();
 
 //Convert month number to month title
 let monthName = months[today.getMonth()];

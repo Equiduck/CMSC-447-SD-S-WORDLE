@@ -56,34 +56,6 @@ function advanceTurn(){
 	updateTurnDisplay();
 }
 
-function finishTurnDisplay(winner){
-	var indicator = document.getElementById("turn-indicator");
-	var heroStatus = document.getElementById("player1-status");
-	var rivalStatus = document.getElementById("player2-status");
-
-	if (indicator) {
-		indicator.textContent = winner === "human"
-			? "You won!"
-			: winner === "cpu"
-				? "CPU wins!"
-				: "Game over";
-	}
-	if (heroStatus) {
-		heroStatus.textContent = winner === "human"
-			? "Winner!"
-			: winner === "none"
-				? "Out of guesses."
-				: "Waiting...";
-	}
-	if (rivalStatus) {
-		rivalStatus.textContent = winner === "cpu"
-			? "Winner!"
-			: winner === "none"
-				? "Out of guesses."
-				: "Waiting...";
-	}
-}
-
 document.addEventListener("keydown", function(event){
 
 		//Anyother key besides enter being pressed means they are typing 

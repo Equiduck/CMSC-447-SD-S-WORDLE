@@ -261,7 +261,6 @@
 
   function finish(winner) {
     finished = true;
-    finishTurnDisplay(winner);
     document.dispatchEvent(new CustomEvent("wordle:gameover", {
       detail: {
         answer: game.answer,
