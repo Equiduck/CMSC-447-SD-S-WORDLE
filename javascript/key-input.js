@@ -1,3 +1,4 @@
+
 // Letters and Delete for the playing row
 (function () {
   "use strict";
@@ -120,13 +121,18 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    // Ignore held keys
+    //Check if onscreen keyboard input is required.
+    var checkbox = document.getElementById("keyboardElement");
+    if (checkbox && checkbox.checked) return;
+
+    // Ignore held keys.
     if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Backspace") remove();
     else if (event.key === "Enter") submitGuess();
     else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
   });
 
+  
   document.addEventListener("click", function (event) {
     var button = event.target.closest(".keyboard-Container button");
     if (!button) return;

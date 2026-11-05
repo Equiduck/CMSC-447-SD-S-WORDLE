@@ -131,6 +131,8 @@ h2 {
 .container.active {
 
     filter: blur(20px);
+    user-select: none;
+    pointer-events: none;
 
     
 

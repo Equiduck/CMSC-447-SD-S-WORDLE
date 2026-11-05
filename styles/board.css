@@ -56,3 +56,9 @@
   border: 2px solid var(--color-tone-3);
   color: var(--color-tone-1);
 }
+
+.dark-mode .tile[data-state="tbd"] {
+  background-color: black;
+  border: 2px solid var(--color-tone-7);
+  color: white;
+}

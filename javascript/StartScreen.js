@@ -90,12 +90,6 @@ let day = today.getDate();
 //Convert month number to month title
 let monthName = months[today.getMonth()];
 
-//Format current day
-if (day < 10) {
-
-    day = '0' + day;
-
-}
 
 //Format entire date
 const formattedDate = monthName + ' ' + day + ', ' + year;
