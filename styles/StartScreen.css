@@ -1,3 +1,55 @@
+.login-popup {
+    display: none;
+    z-index: 20;
+    transition: 0.5s;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 270px;
+    background: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e3e3e1;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.login-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+
+.signup-popup {
+    display: none;
+    z-index: 20;
+    transition: 0.5s;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 270px;
+    background: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e3e3e1;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.signup-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+
 .centeredItems {
     display: flex;
     flex-direction: column;
@@ -8,7 +60,6 @@
 }
 
 .playButton {
-
     background-color: black;
     color: white;
     border: 1px solid black;
@@ -23,12 +74,13 @@
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-
 }
 
 .popup {
-    
     opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    z-index: 20;
     transition: 0.5s;
     position: fixed;
     top: 40%;
@@ -41,23 +93,24 @@
     border: 1px solid black;
     border-radius: 5px;
     background-color: #e3e3e1;
-    visibility: hidden;
     text-align: center;
     justify-content: center;
     margin: 0;
-    
-
 }
 
 .popup h2 {
-
     font-size: 15px;
-
 }
 
+.popup.active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition: 0.5s;
+}
 
 .exitButton {
-
     background: #e3e3e1;
     border-radius: 0px;
     border: 0;
@@ -71,24 +124,19 @@
     text-decoration: none;
     display: inline-block;
     color: black;
-
-
 }
 
 body {
-
     background-color: #e3e3e1;
     font-family: "PT Serif Caption", serif;
     font-weight: 400;
     font-style: normal;
-
 }
 
 img {
-
     width: 10%;
     height: 10%;
-
+    margin-left: 40px;
 }
 
 h1 {
@@ -98,19 +146,17 @@ h1 {
     margin-top: 3px;
     margin-bottom: 0;
     margin-right: 0;
-    margin-left: 0;
-    
+    margin-left: 45px;
 }
 
 h2 {
     font-family: "PT Serif Caption", serif;
     font-weight: 400;
     font-style: normal;
-    
+    margin-left: 50px;
 }
 
 .averageButton {
-
     border: 1px solid black;
     text-align: center;
     border-radius: 30px;
@@ -125,29 +171,20 @@ h2 {
     color: black;
     text-decoration: none;
     display: inline-block;
-
 }
 
 .container.active {
-
     filter: blur(20px);
-    user-select: none;
     pointer-events: none;
-
-    
-
+    user-select: none;
 }
 
-.popup.active {
-
-    top: 50%;
-    visibility: visible;
-    opacity: 1;
-    transition: 0.5s;
+.averageButton:hover{
+    background-color: #000000;
+    color: white;
 }
 
 .container {
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,10 +195,25 @@ h2 {
 }
 
 .top {
-
     justify-content: right;
     text-align: right;
-
 }
 
+button{
+    background-color: #dbd6d6;
+    border:#000000;
+    border-style: double;
+    color: rgb(13, 12, 12);
+    padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	margin: 4px 8px;
+	cursor: pointer;
+	border-radius: 30px;
+}
 
+button:hover{
+    background-color: #000000;
+    color: white;
+}

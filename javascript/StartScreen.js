@@ -1,9 +1,9 @@
-
 //Create variables for popup
 const container = document.querySelector('.container');
 const popup = document.querySelector('.popup');
 const playButton = document.getElementById('playButton');
 const exitButton = document.getElementById('exitButton');
+const languageButton = document.getElementById('languageButton');
 const popupTitle = document.getElementById("language-popup-title");
 const popupDescription = document.getElementById("language-popup-description");
 const playChoices = [...document.querySelectorAll("[data-language]")];
@@ -29,6 +29,13 @@ function resetToLanguageStep() {
     delete playChoices[1].dataset.mode;
     playChoices.forEach((choice) => { choice.href = "#"; });
 }
+
+function openLogin() {document.getElementById("loginForm").style.display = "block";}
+function closeLogin() {document.getElementById("loginForm").style.display = "none";}
+function openSignUp() {document.getElementById("signupForm").style.display = "block";}
+function closeSignUp() {document.getElementById("signupForm").style.display = "none";}
+function openLang() {openSelector();}
+function closeLang() {closeSelector();}
 
 //Allow popup to appear
 const toggle = () => {
@@ -62,7 +69,14 @@ function showPlayTypeStep(language) {
 
 //Let button presses function
 playButton.addEventListener('click', openSelector);
-exitButton.addEventListener('click', closeSelector);
+exitButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    closeSelector();
+});
+languageButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    openSelector();
+});
 
 playChoices.forEach((choice) => {
     choice.addEventListener("click", (event) => {
