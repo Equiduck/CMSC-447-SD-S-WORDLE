@@ -49,36 +49,6 @@ body.game-result-open {
   padding: 0;
 }
 
-/*New game button.*/
-.new-game-control {
-  min-height: 36px;
-  margin-left: auto;
-  padding: 0 16px;
-  border: 1px solid #121212;
-  border-radius: 24px;
-  background: #fff;
-  color: #121212;
-  cursor: pointer;
-  font-family: "nyt-franklin", "Helvetica Neue", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.new-game-control:hover {
-  background: #f4f4f4;
-}
-
-.new-game-control:focus-visible {
-  outline: 2px solid #005fcc;
-  outline-offset: 2px;
-}
-
-.new-game-control:disabled {
-  cursor: wait;
-  opacity: 0.6;
-}
-
 /*Result modal.*/
 .game-result {
   position: fixed;
@@ -136,35 +106,6 @@ body.game-result-open {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.game-result__button {
-  width: min(100%, 320px);
-  min-height: 52px;
-  margin-top: 24px;
-  border: 0;
-  border-radius: 9999px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font-family: "nyt-franklin", "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.game-result__button:hover {
-  opacity: 0.85;
-}
-
-.game-result__button:focus-visible {
-  outline: 2px solid #005fcc;
-  outline-offset: 3px;
-}
-
-.game-result__button:disabled {
-  cursor: wait;
-  opacity: 0.6;
 }
 
 @keyframes wordle-result-in {
