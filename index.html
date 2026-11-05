@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="./styles/board.css" />
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
-    <link rel="stylesheet" href="./styles/feedback.css"/>
-    <link rel="stylesheet" href="./styles/end-screen.css"/>
   </head>
 
   <body>
@@ -199,30 +197,9 @@
 
     <div class="game-toast" id="game-toast" role="status" aria-live="polite"></div>
 
-    <div
-      class="game-result"
-      id="game-result"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="game-result-title"
-      aria-describedby="game-result-message"
-      hidden
-    >
-      <div class="game-result__panel">
-        <div class="game-result__icon" id="game-result-icon" aria-hidden="true"></div>
-        <h2 class="game-result__title" id="game-result-title"></h2>
-        <p class="game-result__message" id="game-result-message"></p>
-        <p class="game-result__answer" id="game-result-answer"></p>
-        <a class="game-result__button" href="StartScreen.html">
-          Start Screen
-        </a>
-      </div>
-    </div>
-
     <script src="./javascript/words.js"></script>
     <script src="./javascript/cpu.js"></script>
     <script src="./javascript/game-colors.js"></script>
-    <script src="./javascript/end-screen.js"></script>
     <script src="./javascript/key-input.js"></script>
     <script src = "./javascript/Options.js"></script>
   </body>

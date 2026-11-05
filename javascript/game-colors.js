@@ -49,6 +49,18 @@
   if (forcedAnswer && /^[a-z]{5}$/i.test(forcedAnswer)) game.answer = forcedAnswer.toLowerCase();
   var keyStates = {};
   var finished = false;
+  var toast = document.getElementById("game-toast");
+  var toastTimer;
+
+  function showToast(text) {
+    if (!toast) return;
+    clearTimeout(toastTimer);
+    toast.textContent = text;
+    toast.dataset.visible = "true";
+    toastTimer = window.setTimeout(function () {
+      toast.dataset.visible = "false";
+    }, 1500);
+  }
 
   function ordinal(value) {
     var remainder = value % 100;
@@ -281,5 +293,9 @@
         });
       }, 700);
     });
+  });
+
+  document.addEventListener("wordle:invalidguess", function (event) {
+    if (event.detail && event.detail.message) showToast(event.detail.message);
   });
 })();
