@@ -55,39 +55,56 @@
     render(rowIndex);
   }
 
-  function submit() {
+  function rejectGuess(row, message) {
+    row.setAttribute("data-animation", "invalid");
+    document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
+      detail: { message: message },
+    }));
+  }
+
+  function submitGuess() {
     if (locked || waiting) return;
     var language = document.body.dataset.wordLanguage === "spanish" ? "spanish" : "english";
     var row = boardRows[rowIndex];
-    //Submit valid row.
+    var response = { response_code: 0 };
+
+    //Convert the letter array into a word.
     if (rows[rowIndex].length !== COLUMNS) {
-      row.setAttribute("data-animation", "invalid");
-      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
-        detail: {
-          message: language === "spanish"
-            ? "No hay suficientes letras para una palabra."
-            : "Not enough letters",
-        },
-      }));
-      return;
+      response.response_code = -1;
     }
-    var word = rows[rowIndex].join("");
-    if (!window.WordleCpu || !window.WordleCpu.isValidGuess(word, language)) {
-      row.setAttribute("data-animation", "invalid");
-      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
-        detail: {
-          message: language === "spanish"
-            ? "La palabra no está en el diccionario."
-            : "Not in word list",
-        },
-      }));
-      return;
+
+    if (response.response_code === 0) {
+      response.word = rows[rowIndex].join("");
+      if (!window.WordleCpu) {
+        response.response_code = -3;
+      } else if (!window.WordleCpu.isValidGuess(response.word, language)) {
+        response.response_code = -2;
+      }
     }
-    document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
-      detail: { rowIndex: rowIndex, word: word },
-    }));
-    //Move to next row.
-    waiting = true;
+
+    if (response.response_code === 0) {
+      document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
+        detail: { rowIndex: rowIndex, word: response.word },
+      }));
+      //Move to next row after an accepted guess.
+      waiting = true;
+    } else if (response.response_code === -1) {
+      rejectGuess(row, language === "spanish"
+        ? "No hay suficientes letras para una palabra."
+        : "Not enough letters");
+    } else if (response.response_code === -2) {
+      rejectGuess(row, language === "spanish"
+        ? "La palabra no está en el diccionario."
+        : "Not in word list");
+    } else if (response.response_code === -3) {
+      rejectGuess(row, language === "spanish"
+        ? "No se pudo validar la respuesta."
+        : "Unable to validate the answer.");
+    } else {
+      rejectGuess(row, language === "spanish"
+        ? "Ocurrió un error inesperado."
+        : "An unexpected error occurred.");
+    }
   }
 
   document.addEventListener("wordle:cpuplayed", function (event) {
@@ -106,7 +123,7 @@
     // Ignore held keys
     if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Backspace") remove();
-    else if (event.key === "Enter") submit();
+    else if (event.key === "Enter") submitGuess();
     else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
   });
 
@@ -115,7 +132,7 @@
     if (!button) return;
     var label = button.textContent.trim().toLowerCase();
     if (label === "delete") remove();
-    else if (label === "enter") submit();
+    else if (label === "enter") submitGuess();
     else if (/^[a-z]$/.test(label)) add(label);
   });
 

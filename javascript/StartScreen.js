@@ -30,15 +30,19 @@ function resetToLanguageStep() {
     playChoices.forEach((choice) => { choice.href = "#"; });
 }
 
+//Allow popup to appear
+const toggle = () => {
+    container.classList.toggle('active');
+    popup.classList.toggle('active');
+};
+
 function openSelector() {
     resetToLanguageStep();
-    container.classList.add("active");
-    popup.classList.add("active");
+    if (!container.classList.contains("active")) toggle();
 }
 
 function closeSelector() {
-    container.classList.remove("active");
-    popup.classList.remove("active");
+    if (container.classList.contains("active")) toggle();
 }
 
 function showPlayTypeStep(language) {
@@ -81,7 +85,7 @@ playChoices.forEach((choice) => {
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const today = new Date();
 const year = today.getFullYear();
-const day = today.getDate();
+let day = today.getDate();
 
 //Convert month number to month title
 let monthName = months[today.getMonth()];
