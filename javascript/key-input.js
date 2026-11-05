@@ -4,9 +4,13 @@
 
   var COLUMNS = 5;
   var ORDINALS = ["th", "st", "nd", "rd"];
-  var letters = [];
   var boardRows = document.querySelectorAll(".board .row");
-  var currentRowIndex = 0;
+  var rows = [];
+  var rowIndex = 0;
+  var locked = false;
+  var waiting = false;
+
+  for (var r = 0; r < boardRows.length; r += 1) rows.push([]);
 
   function ordinal(value) {
     var remainder = value % 100;
@@ -14,17 +18,20 @@
     return value + suffix;
   }
 
-  function currentTiles() {
-    var row = boardRows[currentRowIndex];
+  function tilesFor(index) {
+    var row = boardRows[index];
     return row ? row.querySelectorAll('[data-testid="tile"]') : [];
   }
 
-  function render() {
-    var tiles = currentTiles();
+  function render(index) {
+    var tiles = tilesFor(index);
+    var letters = rows[index] || [];
     for (var i = 0; i < tiles.length; i += 1) {
       var letter = letters[i] || "";
+      var previousLetter = tiles[i].textContent.toLowerCase();
       tiles[i].textContent = letter.toUpperCase();
       tiles[i].setAttribute("data-state", letter ? "tbd" : "empty");
+      if (letter && letter !== previousLetter) tiles[i].setAttribute("data-animation", "pop");
       tiles[i].setAttribute(
         "aria-label",
         ordinal(i + 1) + " letter, " + (letter ? letter.toUpperCase() : "empty"),
@@ -33,87 +40,73 @@
   }
 
   function add(letter) {
-    if (currentRowIndex >= boardRows.length) return;
-    // Overflow prevention
-    if (letters.length >= COLUMNS) return;
-    letters.push(letter);
-    render();
+    if (locked || waiting) return;
+    //Stop at five letters.
+    if (rows[rowIndex].length >= COLUMNS) return;
+    rows[rowIndex].push(letter);
+    render(rowIndex);
   }
 
   function remove() {
-    if (currentRowIndex >= boardRows.length) return;
-    if (letters.length === 0) return;
-    letters.pop();
-    render();
+    if (locked || waiting) return;
+    //Keep previous rows.
+    if (rows[rowIndex].length === 0) return;
+    rows[rowIndex].pop();
+    render(rowIndex);
   }
 
-  //Function for submitting the current five-letter guess
-  function submitGuess(){
-
-    //wont submit a guess if it's not long enough
-    if(letters.length !== COLUMNS){
-      alert("Please enter a five-letter word.");
-      return;
-    }
-
-    //converting the letter array into a word
-    var guess = letters.join("").toUpperCase();
-
-    //temporary testing  until middleware respounds
-    console.log("Submitting guess:", guess);
-
-    //Temporary response using team B's JSON format. Will be removed in final product 
-    const response ={
-      response_code: 0,
-      feedback: "bgggb"
-    };
-
-    if(response.response_code === 0){
-      console.log("Guess accepted: ", guess);
-      console.log("Feedback:", response.feedback);
-
-      document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
+  function submit() {
+    if (locked || waiting) return;
+    var language = document.body.dataset.wordLanguage === "spanish" ? "spanish" : "english";
+    var row = boardRows[rowIndex];
+    //Submit valid row.
+    if (rows[rowIndex].length !== COLUMNS) {
+      row.setAttribute("data-animation", "invalid");
+      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
         detail: {
-          rowIndex: currentRowIndex,
-          word: guess.toLowerCase(),
+          message: language === "spanish"
+            ? "No hay suficientes letras para una palabra."
+            : "Not enough letters",
         },
       }));
-
-      //Only accepted guesses unlock and move to the next row.
-      if (typeof advanceTurn === "function") advanceTurn();
-      currentRowIndex += 1;
-      letters = [];
-      render();
+      return;
     }
-
-    //Alerts for handling error response codes
-    else if(response.response_code === -1){
-      alert("Invalid request format.");
+    var word = rows[rowIndex].join("");
+    if (!window.WordleCpu || !window.WordleCpu.isValidGuess(word, language)) {
+      row.setAttribute("data-animation", "invalid");
+      document.dispatchEvent(new CustomEvent("wordle:invalidguess", {
+        detail: {
+          message: language === "spanish"
+            ? "La palabra no está en el diccionario."
+            : "Not in word list",
+        },
+      }));
+      return;
     }
-
-    else if(response.response_code === -2){
-      alert("Invalid guess. Please try again.");
-    }
-
-    else if(response.response_code === -3){
-      alert("Unble to validate the answer.");
-    }
-
-    else{
-      alert("An unexpected error occured.");
-    }
+    document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
+      detail: { rowIndex: rowIndex, word: word },
+    }));
+    //Move to next row.
+    waiting = true;
   }
+
+  document.addEventListener("wordle:cpuplayed", function (event) {
+    waiting = false;
+    if (event.detail && typeof event.detail.nextRow === "number") {
+      rowIndex = Math.min(event.detail.nextRow, rows.length - 1);
+    }
+  });
+
+  document.addEventListener("wordle:gameover", function () {
+    locked = true;
+    waiting = false;
+  });
 
   document.addEventListener("keydown", function (event) {
     // Ignore held keys
     if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Backspace") remove();
-
-    //Call the submit guess function on enter click
-    else if(event.key == "Enter"){
-      submitGuess();
-    }
-
+    else if (event.key === "Enter") submit();
     else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
   });
 
@@ -122,14 +115,23 @@
     if (!button) return;
     var label = button.textContent.trim().toLowerCase();
     if (label === "delete") remove();
-
-    //submitting guess so call the function
-    else if(label == "enter"){
-      submitGuess();
-    }
-    
+    else if (label === "enter") submit();
     else if (/^[a-z]$/.test(label)) add(label);
   });
 
-  render();
+  var board = document.getElementById("board");
+  if (board) {
+    board.addEventListener("animationend", function (event) {
+      if (event.animationName === "wordle-tile-pop" &&
+          event.target.getAttribute("data-animation") === "pop") {
+        event.target.setAttribute("data-animation", "idle");
+      }
+      if (event.animationName === "wordle-row-shake" &&
+          event.target.getAttribute("data-animation") === "invalid") {
+        event.target.removeAttribute("data-animation");
+      }
+    });
+  }
+
+  render(rowIndex);
 })();
