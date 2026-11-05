@@ -43,8 +43,13 @@
   var game = window.WordleCpu.createGame(language);
   document.body.dataset.wordLanguage = language;
   document.body.dataset.playMode = playMode;
-  var rivalName = document.getElementById("player2-name");
-  if (playMode === "cpu" && rivalName) rivalName.textContent = "CPU";
+  var heroName = document.getElementById("player1-name");
+  if (playMode === "cpu" && window.WordleBoard) {
+    window.WordleBoard.updatePlayerNames({
+      player1: heroName ? heroName.textContent : "",
+      player2: "CPU",
+    });
+  }
   var forcedAnswer = params.get("answer");
   if (forcedAnswer && /^[a-z]{5}$/i.test(forcedAnswer)) game.answer = forcedAnswer.toLowerCase();
   var keyStates = {};
@@ -62,6 +67,14 @@
     }, 1500);
   }
 
+  function advanceBoardTurn() {
+    if (window.WordleBoard) window.WordleBoard.advanceTurn();
+  }
+
+  function finishBoardTurn(winner) {
+    if (window.WordleBoard) window.WordleBoard.finishTurnDisplay(winner);
+  }
+
   function ordinal(value) {
     var remainder = value % 100;
     var suffix = ORDINALS[(remainder - 20) % 10] || ORDINALS[remainder] || ORDINALS[0];
@@ -74,19 +87,6 @@
       var letter = keys[i].textContent.trim().toLowerCase();
       if (keyStates[letter]) keys[i].setAttribute("data-state", keyStates[letter]);
     }
-  }
-
-  function setTurn(turn) {
-    var indicator = document.getElementById("turn-indicator");
-    var hero = document.getElementById("player1-name");
-    var rival = document.getElementById("player2-name");
-    var heroStatus = document.getElementById("player1-status");
-    var rivalStatus = document.getElementById("player2-status");
-    if (!indicator || !hero || !rival) return;
-    var cpuTurn = turn === "cpu";
-    indicator.textContent = (cpuTurn ? rival.textContent : hero.textContent) + "'s Turn";
-    if (heroStatus) heroStatus.textContent = cpuTurn ? "Waiting..." : "Thinking...";
-    if (rivalStatus) rivalStatus.textContent = cpuTurn ? "Thinking..." : "Waiting...";
   }
 
   function finishTile(tile, letter, state, column) {
@@ -212,30 +212,7 @@
 
   function finish(winner) {
     finished = true;
-    var indicator = document.getElementById("turn-indicator");
-    var heroStatus = document.getElementById("player1-status");
-    var rivalStatus = document.getElementById("player2-status");
-    if (indicator) {
-      indicator.textContent = winner === "human"
-        ? "You won!"
-        : winner === "cpu"
-          ? "CPU wins!"
-          : "Game over";
-    }
-    if (heroStatus) {
-      heroStatus.textContent = winner === "human"
-        ? "Winner!"
-        : winner === "none"
-          ? "Out of guesses."
-          : "Waiting...";
-    }
-    if (rivalStatus) {
-      rivalStatus.textContent = winner === "cpu"
-        ? "Winner!"
-        : winner === "none"
-          ? "Out of guesses."
-          : "Waiting...";
-    }
+    finishBoardTurn(winner);
     document.dispatchEvent(new CustomEvent("wordle:gameover", {
       detail: {
         answer: game.answer,
@@ -261,7 +238,7 @@
       }
 
       if (playMode === "human") {
-        if (typeof window.advanceTurn === "function") window.advanceTurn();
+        advanceBoardTurn();
         document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
           detail: { nextRow: detail.rowIndex + 1 },
         }));
@@ -269,7 +246,7 @@
       }
 
       //Wait for CPU.
-      setTurn("cpu");
+      advanceBoardTurn();
       window.setTimeout(function () {
         if (finished) return;
         var cpuGuess = window.WordleCpu.chooseGuess(game);
@@ -285,7 +262,7 @@
               finish("none");
               return;
             }
-            setTurn("human");
+            advanceBoardTurn();
             document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
               detail: { nextRow: cpuRow + 1 },
             }));

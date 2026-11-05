@@ -67,7 +67,11 @@
     if (locked || waiting) return;
     var language = document.body.dataset.wordLanguage === "spanish" ? "spanish" : "english";
     var row = boardRows[rowIndex];
-    var response = { response_code: 0 };
+    var guess = rows[rowIndex].join("").toUpperCase();
+    var response = {
+      response_code: 0,
+      feedback: "bgggb",
+    };
 
     //Convert the letter array into a word.
     if (rows[rowIndex].length !== COLUMNS) {
@@ -75,17 +79,22 @@
     }
 
     if (response.response_code === 0) {
-      response.word = rows[rowIndex].join("");
       if (!window.WordleCpu) {
         response.response_code = -3;
-      } else if (!window.WordleCpu.isValidGuess(response.word, language)) {
+      } else if (!window.WordleCpu.isValidGuess(guess.toLowerCase(), language)) {
         response.response_code = -2;
       }
     }
 
     if (response.response_code === 0) {
+      console.log("Guess accepted:", guess);
+      console.log("Feedback:", response.feedback);
       document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
-        detail: { rowIndex: rowIndex, word: response.word },
+        detail: {
+          rowIndex: rowIndex,
+          word: guess.toLowerCase(),
+          feedback: response.feedback,
+        },
       }));
       //Move to next row after an accepted guess.
       waiting = true;
