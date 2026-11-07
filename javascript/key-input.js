@@ -1,4 +1,3 @@
-
 // Letters and Delete for the playing row
 (function () {
   "use strict";
@@ -6,13 +5,25 @@
   var COLUMNS = 5;
   var ORDINALS = ["th", "st", "nd", "rd"];
   var letters = [];
-  var row = document.querySelectorAll(".board .row")[0];
+  var boardRows = document.querySelectorAll(".board .row");
+  var rowIndex = 0;
+  var row = boardRows[0];
   var tiles = row ? row.querySelectorAll('[data-testid="tile"]') : [];
+  var locked = false;
+  var waiting = false;
 
   function ordinal(value) {
     var remainder = value % 100;
     var suffix = ORDINALS[(remainder - 20) % 10] || ORDINALS[remainder] || ORDINALS[0];
     return value + suffix;
+  }
+
+  function selectRow(index) {
+    rowIndex = Math.min(index, boardRows.length - 1);
+    row = boardRows[rowIndex];
+    tiles = row ? row.querySelectorAll('[data-testid="tile"]') : [];
+    letters = [];
+    render();
   }
 
   function render() {
@@ -28,6 +39,7 @@
   }
 
   function add(letter) {
+    if (locked || waiting) return;
     // Overflow prevention
     if (letters.length >= COLUMNS) return;
     letters.push(letter);
@@ -35,6 +47,7 @@
   }
 
   function remove() {
+    if (locked || waiting) return;
     if (letters.length === 0) return;
     letters.pop();
     render();
@@ -42,6 +55,7 @@
 
   //Function for submitting the current five-letter guess
   function submitGuess(){
+    if (locked || waiting) return;
 
     //wont submit a guess if it's not long enough
     if(letters.length !== COLUMNS){
@@ -62,11 +76,31 @@
     };
 
     if(response.response_code === 0){
+      if (!window.WordleGame || typeof window.WordleGame.submitGuess !== "function") {
+        response.response_code = -3;
+      } else {
+        var gameResponse = window.WordleGame.submitGuess(guess.toLowerCase());
+        response.response_code = gameResponse.response_code;
+        response.feedback = gameResponse.feedback;
+      }
+    }
+
+    if(response.response_code === 0){
       console.log("Guess accepted: ", guess);
       console.log("Feedback:", response.feedback);
 
       //update player turn if accepted
+      waiting = true;
       advanceTurn();
+
+      document.dispatchEvent(new CustomEvent("wordle:rowcomplete", {
+        detail: {
+          rowIndex: rowIndex,
+          word: guess.toLowerCase(),
+          feedback: response.feedback,
+          response: response
+        }
+      }));
     }
 
     //Alerts for handling error response codes
@@ -87,13 +121,25 @@
     }
   }
 
+  document.addEventListener("wordle:cpuplayed", function (event) {
+    waiting = false;
+    if (event.detail && typeof event.detail.nextRow === "number") {
+      selectRow(event.detail.nextRow);
+    }
+  });
+
+  document.addEventListener("wordle:gameover", function () {
+    locked = true;
+    waiting = false;
+  });
+
   document.addEventListener("keydown", function (event) {
     
     //Check if keyboard has been disabled
     var checkbox = document.getElementById("keyboardElement");
 
     // If disabled, ignore key presses
-    if (checkbox.checked == true) {
+    if (checkbox && checkbox.checked == true) {
       return;
     }
     // If not disabled, allow key presses
@@ -102,6 +148,9 @@
       // Ignore held keys
       if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
       if (event.key === "Backspace") remove();
+      else if(event.key == "Enter"){
+        submitGuess();
+      }
       else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
 
     }
@@ -122,6 +171,7 @@
     
     else if (/^[a-z]$/.test(label)) add(label);
   });
+
 
   render();
 })();
