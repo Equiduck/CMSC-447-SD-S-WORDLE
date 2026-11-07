@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+    />
+    <title>Shared-State Wordle - Sprint 1 skeleton</title>
+    <!-- No build step: open this file directly, or serve the folder. -->
+    <link rel="stylesheet" href="./styles/History.css" />
+    <link rel="stylesheet" href="./styles/tokens.css" />
+
+
+  </head>
+
+    <main>  
+
+        <header>
+
+            <nav aria-label="Primary">
+
+                <ul>
+
+                    <li><a href="StartScreen.html">Start Screen</a></li>
+                    <li><a href="index.html" class="active">Game</a></li>
+                    <li><a href="Statistics.html">Statistics</a></li>
+
+                </ul>
+
+            </nav>
+        </header>
+
+        <div class = "container">  
+
+            <h1>History</h1>
+
+            <h2> Please Select a Date to View Games Played on that Day </h2>
+
+            <div class = "calendar">
+
+                <div class = "calendar-header">
+
+                    <button id = "prev-month"> &lt; </button>
+
+                    <div class = "month-year" id = "month-year"> </div>
+
+                    <button id = "next-month"> &gt; </button>
+
+                </div>
+
+                <div class = "calendar-days">
+
+                    <div class = "day-name"> Mon </div>
+                    <div class = "day-name"> Tue </div>
+                    <div class = "day-name"> Wed </div>
+                    <div class = "day-name"> Thu </div>
+                    <div class = "day-name"> Fri </div>
+                    <div class = "day-name"> Sat </div>
+                    <div class = "day-name"> Sun </div>
+
+                </div>
+
+                <div class = "calendar-dates" id = "calendar-dates"> </div>
+
+
+            </div>
+           
+
+        </div>
+
+        <script src = "./javascript/History.js"></script>
+
+    </main>  
+
+</html>
