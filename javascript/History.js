@@ -2,6 +2,8 @@ const monthYearElement = document.getElementById('month-year');
 const datesElement = document.getElementById('calendar-dates');
 const prevButton = document.getElementById('prev-month');
 const nextButton = document.getElementById('next-month');
+const calendarElement = document.getElementById('calendar');
+const calendarReturnButton = document.getElementById('calendarReturn');
 
 let currentDate = new Date();
 
@@ -61,6 +63,16 @@ nextButton.addEventListener("click", () => {
     updateCalendar();
 
 })
+
+const calendarToggle = () => {
+
+    calendarElement.classList.toggle('active');
+    calendarReturnButton.classList.toggle('active');
+
+}
+
+datesElement.addEventListener('click', calendarToggle);
+calendarReturnButton.addEventListener('click', calendarToggle);
 
 updateCalendar();
 

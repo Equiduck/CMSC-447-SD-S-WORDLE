@@ -36,8 +36,56 @@ h2 {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
 
 }
+
+.calendar.active {
+
+    visibility: hidden;
+    transition: 0.5s;
+    top: 50%;
+    opacity: 0;
+
+}
+
+.calendarReturn {
+
+    background-color: #6aaa64;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    visibility: hidden;
+    transition: 0.5s;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    opacity: 0;
+
+}
+
+.gameHistoryPopup {
+
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+
+}
+
+.calendarReturn.active {
+
+    visibility: visible;
+    transition: 0.5s;
+    top: 50%;
+    opacity: 1;
+
+}
+
 
 .calendar-header {
 
