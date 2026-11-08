@@ -4,6 +4,8 @@ const prevButton = document.getElementById('prev-month');
 const nextButton = document.getElementById('next-month');
 const calendarElement = document.getElementById('calendar');
 const calendarReturnButton = document.getElementById('calendarReturn');
+const gameHistory = document.getElementById('gameHistoryPopup')
+
 
 let currentDate = new Date();
 
@@ -64,10 +66,15 @@ nextButton.addEventListener("click", () => {
 
 })
 
-const calendarToggle = () => {
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const calendarToggle = async() => {
 
     calendarElement.classList.toggle('active');
+
     calendarReturnButton.classList.toggle('active');
+
+    gameHistory.classList.toggle('active');
 
 }
 
@@ -86,6 +93,8 @@ const exitButton = document.getElementById('optionsExitButton');
 const toggle = () => {
     container.classList.toggle('active');
     popup.classList.toggle('active');
+    calendarReturnButton.classList.toggle('blur');
+    gameHistory.classList.toggle('blur');
 };
 
 //Let button presses function

@@ -39,6 +39,7 @@ h2 {
     visibility: visible;
     transition: 0.5s;
     opacity: 1;
+    top: 50%;
 
 }
 
@@ -48,6 +49,7 @@ h2 {
     transition: 0.5s;
     top: 50%;
     opacity: 0;
+    position: absolute;
 
 }
 
@@ -56,24 +58,16 @@ h2 {
     background-color: #6aaa64;
     color: white;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 10px;
     visibility: hidden;
     transition: 0.5s;
-    text-align: center;
-    justify-content: center;
-    display: flex;
     opacity: 0;
-
-}
-
-.gameHistoryPopup {
-
-    justify-content: center;
     text-align: center;
-    flex-direction: column;
+    justify-content: center;
+    width: 175px;
+    height: 40px;
+    top: 50%;
 
 }
 
@@ -83,6 +77,51 @@ h2 {
     transition: 0.5s;
     top: 50%;
     opacity: 1;
+
+}
+
+.calendarReturn.blur {
+
+    filter: blur(20px);
+    user-select: none;
+    pointer-events: none;
+
+}
+
+.high-contrast-mode .calendarReturn {
+
+    color: white;
+    background-color:#f5793a
+
+}
+
+.gameHistoryPopup {
+
+    transition: 0.5s;
+    visibility: hidden;
+    text-align: center;
+    flex-direction: column;
+    opacity: 0;
+    margin: 0;
+    top: 50%
+    
+
+}
+
+.gameHistoryPopup.active {
+
+    visibility: visible;
+    transition: 0.5s;
+    top: 50%;
+    opacity: 1;
+
+}
+
+.gameHistoryPopup.blur {
+
+    filter: blur(20px);
+    user-select: none;
+    pointer-events: none;
 
 }
 
