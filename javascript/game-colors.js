@@ -12,6 +12,7 @@
   var CPU_TYPE_DELAY_MS = 180;
   var LANGUAGE_KEY = "shared-wordle-language";
   var MODE_KEY = "shared-wordle-mode";
+  var DIFFICULTY_KEY = "shared-wordle-difficulty";
   var rows = document.querySelectorAll(".board .row");
   var params = new URLSearchParams(window.location.search);
   var requestedLanguage = params.get("lang");
@@ -42,9 +43,26 @@
   } catch (error) {
     //Save mode.
   }
-  var game = window.WordleCpu.createGame(language);
+  var requestedDifficulty = params.get("difficulty");
+  if (!requestedDifficulty) {
+    try {
+      requestedDifficulty = localStorage.getItem(DIFFICULTY_KEY);
+    } catch (error) {
+      requestedDifficulty = null;
+    }
+  }
+  var difficulty = /^(easy|medium|hard)$/i.test(requestedDifficulty || "")
+    ? requestedDifficulty.toLowerCase()
+    : "hard";
+  try {
+    localStorage.setItem(DIFFICULTY_KEY, difficulty);
+  } catch (error) {
+    //Save difficulty.
+  }
+  var game = window.WordleCpu.createGame(language, difficulty);
   document.body.dataset.wordLanguage = language;
   document.body.dataset.playMode = playMode;
+  document.body.dataset.difficulty = difficulty;
   var heroName = document.getElementById("player1-name");
   if (playMode === "cpu" && typeof updatePlayerNames === "function") {
     updatePlayerNames({
