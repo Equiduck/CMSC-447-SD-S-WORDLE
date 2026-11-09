@@ -6,37 +6,129 @@
     <meta name="color-scheme" content="light" />
     <meta
       name="description"
-      content="Shared-state Wordle - Sprint 1 layout skeleton (separator bar + 6x5 grid)"
+      content="History page for the Shared-State Wordle game"
     />
     <title>Shared-State Wordle - Sprint 1 skeleton</title>
     <!-- No build step: open this file directly, or serve the folder. -->
+    <link rel="stylesheet" href="./styles/History.css" />
     <link rel="stylesheet" href="./styles/tokens.css" />
-    <link rel="stylesheet" href="./styles/base.css" />
-    <link rel="stylesheet" href="./styles/history.css"/>
+
+
   </head>
 
-    <body>  
-        <div class="container">  
-            <header>
-                <nav>
-                    <ul>
-                        <li><a href="StartScreen.html">Start Screen</a></li>
-                        <li><a href="index.html" class="active">Game</a></li>
-                        <li><a href="history.html">History</a></li>
-                    </ul>
-                </nav>
-            </header>
+    <main>  
+
+        <header>
+
+            <nav aria-label="Primary">
+
+                <ul>
+
+                    <li><a href="StartScreen.html">Start Screen</a></li>
+                    <li><a href="index.html" class="active">Game</a></li>
+                    <li><a href="Statistics.html">Statistics</a></li>
+                    <li><a href="#" id="optionsButton">Options</a></li>
+
+                </ul>
+
+            </nav>
+        </header>
+
+        <div class = "container">  
+
+            <h1>History</h1>
+
+            <h2> Please Select a Date to View Games Played on that Day </h2>
+
+            <div class = "calendar" id = "calendar">
+
+                <div class = "calendar-header">
+
+                    <button id = "prev-month"> &lt; </button>
+
+                    <div class = "month-year" id = "month-year"> </div>
+
+                    <button id = "next-month"> &gt; </button>
+
+                </div>
+
+                <div class = "calendar-days">
+
+                    <div class = "day-name"> Mon </div>
+                    <div class = "day-name"> Tue </div>
+                    <div class = "day-name"> Wed </div>
+                    <div class = "day-name"> Thu </div>
+                    <div class = "day-name"> Fri </div>
+                    <div class = "day-name"> Sat </div>
+                    <div class = "day-name"> Sun </div>
+
+                </div>
+
+                <div class = "calendar-dates" id = "calendar-dates"> </div>
+
+
+            </div>
+           
+
         </div>
 
-        <div class="history">  
-            <h1>History</h1>
-            <hr width="70%" size="1">
-                
-            <div class="historyGrid">
-                <div>Loss: Total guesses 3</div>
-                <div>Win: At 3 words</div>
+        <div class = "optionsPopup" id = "optionsPopup">
+
+            <div class = "top">
+                <a href = "#" class = "optionsExitButton" id = "optionsExitButton"> &times</a>
             </div>
-            
-        </div>  
-    </body> 
+
+            <h1> Options</h1>
+
+            <div class = "option">
+
+                <h2> Dark Theme</h2>
+        
+                <div class = "optionsLayout">
+                    <label class="switch">
+          
+                    <input type="checkbox" id = "darkTheme" onclick = "darkMode()">
+                    <span class="slider round"></span>
+
+                    </label>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class = "option">
+
+                <h2> High Contrast Mode</h2>
+                <div class = "optionsLayout">
+                    <label class="switch">
+          
+                        <input type="checkbox" id = "highContrast" onclick = "highContrastMode()">
+                        <span class="slider round"></span>
+
+                    </label>
+                </div>
+
+            </div>
+
+            <p> Contrast and colorblindness improvements</p>
+
+            <hr>
+
+        </div>
+
+        <div class = "gameHistoryPopup" id = "gameHistoryPopup">
+
+            <button class = "calendarReturn" id = "calendarReturn"> Return to Calendar </button>
+
+            <p> Fake Data </p>
+
+
+
+        </div>
+
+        <script src = "./javascript/History.js"></script>
+
+    </main>  
+
 </html>
