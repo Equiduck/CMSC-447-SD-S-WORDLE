@@ -8,8 +8,10 @@
   var message = document.getElementById("game-result-message");
   var answer = document.getElementById("game-result-answer");
   var newGame = document.getElementById("new-game-button");
+  var closeButton = document.getElementById("game-result-close");
+  var previousFocus = null;
 
-  if (!overlay || !icon || !title || !message || !answer || !newGame) return;
+  if (!overlay || !icon || !title || !message || !answer || !newGame || !closeButton) return;
 
   function showResult(event) {
     var detail = event.detail || {};
@@ -31,6 +33,7 @@
         : "You're out of guesses.";
     answer.textContent = detail.answer ? "The word was " + detail.answer.toUpperCase() + "." : "";
     answer.hidden = !detail.answer;
+    previousFocus = document.activeElement;
     overlay.hidden = false;
     document.body.classList.add("game-result-open");
     window.setTimeout(function () {
@@ -38,7 +41,16 @@
     }, 0);
   }
 
+  function closeResult() {
+    overlay.hidden = true;
+    document.body.classList.remove("game-result-open");
+    if (previousFocus && typeof previousFocus.focus === "function") {
+      previousFocus.focus();
+    }
+  }
+
   document.addEventListener("wordle:gameover", showResult);
+  closeButton.addEventListener("click", closeResult);
   newGame.addEventListener("click", function () {
     newGame.disabled = true;
     window.location.reload();

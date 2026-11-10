@@ -19,6 +19,7 @@ body.game-result-open {
 }
 
 .game-result__panel {
+  position: relative;
   width: min(90%, 500px);
   max-height: calc(100dvh - 32px);
   overflow-y: auto;
@@ -30,6 +31,28 @@ body.game-result-open {
   text-align: center;
   box-shadow: 0 4px 23px rgba(0, 0, 0, 0.2);
   animation: wordle-result-in 200ms ease-out;
+}
+
+.game-result__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #000;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.game-result__close:focus-visible {
+  outline: 2px solid #005fcc;
+  outline-offset: 2px;
 }
 
 .game-result__icon {
@@ -112,6 +135,10 @@ body.game-result-open {
 .dark-mode .game-result__button {
   background: #fff;
   color: #000;
+}
+
+.dark-mode .game-result__close {
+  color: #fff;
 }
 
 @keyframes wordle-result-in {
