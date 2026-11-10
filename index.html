@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./styles/board.css" />
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
+    <link rel="stylesheet" href="./styles/end-screen.css"/>
   </head>
 
   <body>
@@ -196,9 +197,38 @@
 
     </div>
 
+    <div
+      class="game-result"
+      id="game-result"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="game-result-title"
+      aria-describedby="game-result-message"
+      hidden
+    >
+      <div class="game-result__panel">
+        <button
+          class="game-result__close"
+          id="game-result-close"
+          type="button"
+          aria-label="Close results"
+        >
+          &times;
+        </button>
+        <div class="game-result__icon" id="game-result-icon" aria-hidden="true"></div>
+        <h2 class="game-result__title" id="game-result-title"></h2>
+        <p class="game-result__message" id="game-result-message"></p>
+        <p class="game-result__answer" id="game-result-answer"></p>
+        <button class="game-result__button" id="new-game-button" type="button">
+          New Game
+        </button>
+      </div>
+    </div>
+
     <script src="./javascript/words.js"></script>
     <script src="./javascript/cpu.js"></script>
     <script src="./javascript/game-colors.js"></script>
+    <script src="./javascript/end-screen.js"></script>
     <script src="./javascript/key-input.js"></script>
     <script src = "./javascript/Options.js"></script>
   </body>
