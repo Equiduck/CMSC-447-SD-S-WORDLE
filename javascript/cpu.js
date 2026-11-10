@@ -145,7 +145,12 @@
     return DIFFICULTY_SOFT_FLOORS[difficulty];
   }
 
-  function chooseSoftGuess(game, dictionary, threshold) {
+  function canGuess(candidate, game, options) {
+    if (game.used[candidate]) return false;
+    return !(options.avoidAnswer && candidate === game.answer);
+  }
+
+  function chooseSoftGuess(game, dictionary, threshold, options) {
     var pools = [dictionary.answers, dictionary.allowed];
     var fallback = [];
     var fallbackScore = -1;
@@ -157,7 +162,7 @@
 
       for (var i = 0; i < source.length; i += 1) {
         var candidate = source[i];
-        if (game.used[candidate]) continue;
+        if (!canGuess(candidate, game, options)) continue;
 
         var score = softMatchPercent(candidate, game);
         if (score === null) continue;
@@ -181,39 +186,51 @@
     return fallback.length > 0 ? randomChoice(fallback) : null;
   }
 
-  function chooseHardGuess(game, dictionary) {
+  function chooseHardGuess(game, dictionary, options) {
     var pool = dictionary.answers.filter(function (word) {
-      return !game.used[word] && isConsistent(word, game);
+      return canGuess(word, game, options) && isConsistent(word, game);
     });
     if (pool.length === 0) {
       pool = dictionary.allowed.filter(function (word) {
-        return !game.used[word] && isConsistent(word, game);
+        return canGuess(word, game, options) && isConsistent(word, game);
       });
+    }
+    if (pool.length === 0 && options.avoidAnswer) {
+      var alternate = chooseSoftGuess(game, dictionary, 0, options);
+      if (alternate) {
+        game.used[alternate] = true;
+        return alternate;
+      }
     }
     if (pool.length === 0) {
       pool = dictionary.allowed.filter(function (word) {
+        return canGuess(word, game, options);
+      });
+    }
+    if (pool.length === 0) {
+      pool = dictionary.answers.filter(function (word) {
         return !game.used[word];
       });
     }
-    if (pool.length === 0) pool = dictionary.answers;
     var guess = randomChoice(pool);
     game.used[guess] = true;
     return guess;
   }
 
-  function chooseGuess(game) {
+  function chooseGuess(game, options) {
     var dictionary = dictionaryFor(game.language);
     var difficulty = normalizeDifficulty(game.difficulty);
+    var choiceOptions = options || {};
 
-    if (difficulty === "hard") return chooseHardGuess(game, dictionary);
+    if (difficulty === "hard") return chooseHardGuess(game, dictionary, choiceOptions);
 
-    var guess = chooseSoftGuess(game, dictionary, thresholdFor(game));
+    var guess = chooseSoftGuess(game, dictionary, thresholdFor(game), choiceOptions);
     if (guess) {
       game.used[guess] = true;
       return guess;
     }
 
-    return chooseHardGuess(game, dictionary);
+    return chooseHardGuess(game, dictionary, choiceOptions);
   }
 
   global.WordleCpu = {

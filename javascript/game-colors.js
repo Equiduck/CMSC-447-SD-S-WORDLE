@@ -10,6 +10,7 @@
   var FEEDBACK_STATE = { b: "absent", y: "present", g: "correct" };
   var FLIP_STAGGER_MS = 300;
   var CPU_TYPE_DELAY_MS = 180;
+  var FIRST_CPU_ROW = 1;
   var LANGUAGE_KEY = "shared-wordle-language";
   var MODE_KEY = "shared-wordle-mode";
   var DIFFICULTY_KEY = "shared-wordle-difficulty";
@@ -314,14 +315,17 @@
       //Wait for CPU.
       window.setTimeout(function () {
         if (finished) return;
-        var cpuGuess = window.WordleCpu.chooseGuess(game);
+        var cpuRow = detail.rowIndex + 1;
+        //Keep the first CPU turn from ending the game.
+        var cpuGuess = window.WordleCpu.chooseGuess(game, {
+          avoidAnswer: cpuRow === FIRST_CPU_ROW,
+        });
         var cpuResponse = submitGameGuess(cpuGuess);
         var cpuFeedback = decodeFeedback(cpuResponse.feedback);
         if (cpuResponse.response_code !== 0 || !cpuFeedback) {
           finish("none");
           return;
         }
-        var cpuRow = detail.rowIndex + 1;
         typeWord(cpuRow, cpuGuess, function () {
           paintRow(cpuRow, cpuGuess, cpuFeedback, function () {
             if (cpuGuess === game.answer) {
