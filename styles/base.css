@@ -12,16 +12,18 @@ body,
   height: 100%;
 }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem
+header {
+  padding: 20px;
+  text-align: right;
 }
 
 nav a {
   color: rgb(0, 0, 0);
   font-weight: bold;
   padding: 0.5rem 0;
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 15px;
 }
 
 body {
@@ -73,16 +75,12 @@ h1 {
 }
 
 .container.active {
-
     filter: blur(20px);
     user-select: none;
     pointer-events: none;
-    
-
 }
 
 .optionsPopup.active {
-
     top: 50%;
     visibility: visible;
     opacity: 1;
@@ -91,7 +89,6 @@ h1 {
 
 
 .optionsPopup {
-    
     opacity: 0;
     transition: 0.5s;
     position: fixed;
@@ -107,18 +104,13 @@ h1 {
     text-align: center;
     justify-content: center;
     margin: 0;
-    
-
 }
 
 .container {
-
   transition: 0.5s;
-
 }
 
 .optionsExitButton {
-
     background-color: white;
     border-radius: 0px;
     border: 0;
@@ -133,46 +125,34 @@ h1 {
     display: inline-block;
     color: black;
     transition: 0.5s;
-
-
 }
 
 .top {
-
   text-align: right;
   justify-content: right;
-
 }
 
 .option {
-
   display: flex;
   justify-content: space-between;
-
 }
 
 .option h2 {
-
   font-size: 20px;
   font-weight: none;
   padding-left: 30px;
   margin-bottom: 2px;
-
 }
 
 .optionsPopup hr {
-
   width: 90%;
-
 }
 
 .optionsPopup p {
-
   font-size: 12px;
   text-align: left;
   padding-left: 30px;
   margin: 0;
-
 }
 
 .switch {
@@ -237,7 +217,6 @@ input:checked + .slider:before {
 }
 
 .optionsLayout {
-
   justify-content: right;
   text-align: right;
   padding-right: 30px;
@@ -271,7 +250,6 @@ input:checked + .slider:before {
 
 .high-contrast-mode input:checked + .slider {
   background-color: #f5793a;
-  
 }
 
 
