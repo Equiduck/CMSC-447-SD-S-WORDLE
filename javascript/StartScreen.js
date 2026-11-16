@@ -7,6 +7,12 @@ const exitButton = document.getElementById('exitButton');
 const popupTitle = document.getElementById("language-popup-title");
 const popupDescription = document.getElementById("language-popup-description");
 const playChoices = [...document.querySelectorAll(".choiceButton")];
+const loginButton = document.getElementById('loginButton');
+const signupButton = document.getElementById('signupButton');
+const loginPopup = document.querySelector('.loginPopup');
+const signupPopup = document.querySelector('.signupPopup');
+const exitLogin = document.getElementById('exitLogin');
+const exitSignup = document.getElementById('exitSignup');
 let selectedLanguage = null;
 let selectedMode = null;
 
@@ -45,6 +51,34 @@ const toggle = () => {
 function openSelector() {
     resetToLanguageStep();
     if (!container.classList.contains("active")) toggle();
+}
+
+function openLogin() {
+    if (!container.classList.contains("active")){
+        container.classList.toggle('active');
+        loginPopup.classList.toggle('active');
+    };
+}
+
+function openSignup() {
+    if (!container.classList.contains("active")){
+        container.classList.toggle('active');
+        signupPopup.classList.toggle('active');
+    };
+}
+
+function closeLogin() {
+    if (container.classList.contains("active")){
+        container.classList.toggle('active');
+        loginPopup.classList.toggle('active');
+    };
+}
+
+function closeSignup() {
+    if (container.classList.contains("active")){
+        container.classList.toggle('active');
+        signupPopup.classList.toggle('active');
+    };
 }
 
 function closeSelector() {
@@ -89,10 +123,6 @@ function showDifficultyStep() {
     });
 }
 
-//Let button presses function
-playButton.addEventListener('click', openSelector);
-exitButton.addEventListener('click', closeSelector);
-
 playChoices.forEach((choice) => {
     choice.addEventListener("click", (event) => {
         if (choice.dataset.language) {
@@ -136,3 +166,13 @@ const formattedDate = monthName + ' ' + day + ', ' + year;
 
 //Bring date to html
 document.getElementById("currentDate").innerHTML = formattedDate;
+
+//Let button presses function
+playButton.addEventListener('click', openSelector);
+exitButton.addEventListener('click', closeSelector);
+
+loginButton.addEventListener('click', openLogin);
+exitLogin.addEventListener('click', closeLogin);
+
+signupButton.addEventListener('click', openSignup);
+exitSignup.addEventListener('click', closeSignup);

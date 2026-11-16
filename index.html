@@ -16,19 +16,18 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/end-screen.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
   </head>
 
   <body>
     <div class="container">
       <header>
         <nav aria-label="Primary">
-          <ul>
-            <li><a href="StartScreen.html">Start Screen</a></li>
-            <!-- <li><a href="index.html" class="active">Game</a></li> -->
-            <li><a href="Statistics.html">Statistics</a></li>
-            <li><a href="History.html">History</a></li>
-            <li><a href="#" id="optionsButton">Options</a></li>
-          </ul>
+          <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a>
+          <!-- <a href="index.html" class="active">Game</a> --> 
+          <a href="History.html"><i class="fa fa-fw fa-history"></i> </a> 
+          <a href="Statistics.html"><i class="fa fa-fw fa-chart-simple"></i> </a>
+          <a href="#" id="optionsButton"><i class="fa fa-fw fa-cog"></i> </a>
         </nav>
       </header>
          
@@ -53,11 +52,9 @@
           <div class="app">
         
           <header class="app__bar" role="banner">
-            
             <div class="app__slot app__slot--start" data-slot="start"></div>
             <div class="app__slot app__slot--center" data-slot="center"></div>
             <div class="app__slot app__slot--end" data-slot="end"></div>
-
           </header>
 
             <main class="app__main">
@@ -67,10 +64,7 @@
                 <div class="board" id="board" aria-label="Shared board"></div>
             
               </div>
-      
             </main>
-  
-
         </div>
 
 
@@ -127,7 +121,6 @@
       <button class="deleteButton">Delete</button>
 
       </div>
-
     </div>
   </div>
 
@@ -151,7 +144,6 @@
 
         </label>
         </div>
-
       </div>
 
       <hr>
@@ -185,16 +177,12 @@
 
         </label>
         </div>
-        
-
       </div>
 
       <p>Ignore key input except from the onscreen keyboard. Most helpful for users using speech recognition or other assistive devices.</p>
 
       <hr>
       
-
-
     </div>
 
     <div

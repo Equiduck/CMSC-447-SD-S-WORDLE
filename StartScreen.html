@@ -16,40 +16,34 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/StartScreen.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption:ital@0;1&display=swap" rel="stylesheet">
 
   </head>
-
-    <main>  
-
+    <body>  
         <div class="container">  
-           
-
-                <div class = "centeredItems">
+            <div class = "centeredItems">
 
                     <img src = "Project-Photos/Wordle_Logo.svg" alt = "Two-Player Wordle Logo">
                     <h1><b>Two-Player Wordle</b></h1>
                     <h2>Wordle with a little twist...</h2>
 
-                    
-
+                
                     <div type = "submit" class="buttons">
                         <a href = "#" class = "playButton" id = "playButton"> Play</a>
-                        <a href = "#" class = "averageButton"> Log in</a>
-                        <a href = "#" class = "averageButton"> Sign up</a>
+                        <a href = "#" class = "averageButton" id = "loginButton"> Log in</a>
+                        <a href = "#" class = "averageButton" id = "signupButton"> Sign up</a>
                     </div>
 
                     <p id = "currentDate"></p>
 
-                </div>
-                
+            </div> 
         </div>  
 
-        <div class = "popup" id="popup">
-
+        <div class = "popup" id="langPopup">
             <div class = "top">
                 <a href = "#" class = "exitButton" id = "exitButton"> &times</a>
             </div>
@@ -60,10 +54,44 @@
             <a href="#" class="averageButton choiceButton" data-language="en">English</a>
             <a href="#" class="averageButton choiceButton" data-language="es">Spanish</a>
             <a href="#" class="averageButton choiceButton" id="third-play-choice" hidden></a>
+        </div>
 
+        <div class = "loginPopup" id="loginPopup">
+            <div class = "top">
+                <a href = "#" class = "exitButton" id = "exitLogin"> &times</a>
+            </div>
+
+            <form>
+                <h1>Login</h1>
+
+                <label for="user">Username</label>
+                <input type="text" placeholder="Enter Username" name="user" required>
+                <br>
+                <label for="psw">Password</label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <br>
+                <button type="submit" >Login</button>
+            </form>
+        </div>
+
+        <div class = "signupPopup" id="signupButton">
+            <div class = "top">
+                <a href = "#" class = "exitButton" id = "exitSignup"> &times</a>
+            </div>
+
+            <form>
+                <h1>Sign up</h1>
+
+                <label for="user">Username</label>
+                <input type="text" placeholder="Enter Username" name="user" required>
+                <br>
+                <label for="psw">Password</label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <br>
+                <button type="submit" >Sign up</button>
+            </form>
         </div>
 
         <script src = "./javascript/StartScreen.js"></script>
-
-    </main>  
+    </body>  
 </html>

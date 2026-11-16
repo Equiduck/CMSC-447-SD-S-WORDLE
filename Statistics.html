@@ -5,19 +5,23 @@
     <title>Game Statistics</title>
 
     <link rel="stylesheet" href="./styles/player-stats.css">
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+    <link rel="stylesheet" href="./styles/tokens.css" />
 </head>
 
 <body>
-
     <!--Navigation buttons-->
-    <nav class="stats-navigation">
-        <a href="./StartScreen.html" class="nav-button">StartScreen</a>
-        <a href="./index.html" class="nav-button">Play</a>
-        <a href="./history.html" class="nav-button">History</a>
-    </nav>
+    <header>
+        <nav>
+            <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a> 
+            <a href="History.html"><i class="fa fa-fw fa-history"></i> </a> 
+            <a href="Statistics.html"><i class="fa fa-fw fa-chart-simple"></i> </a>
+            <a href="#" id="optionsButton"><i class="fa fa-fw fa-cog"></i> </a>
+        </nav>
+    </header>
 
     <main class="statistics-page">
-
         <h1>Statistics</h1>
 
         <!--Player statistic information, ike wr and streak-->

@@ -12,28 +12,20 @@
     <!-- No build step: open this file directly, or serve the folder. -->
     <link rel="stylesheet" href="./styles/History.css" />
     <link rel="stylesheet" href="./styles/tokens.css" />
-
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
   </head>
-
-    <main>  
-
-        <header>
-
-            <nav aria-label="Primary">
-
-                <ul>
-
-                    <li><a href="StartScreen.html">Start Screen</a></li>
-                    <li><a href="index.html" class="active">Game</a></li>
-                    <li><a href="Statistics.html">Statistics</a></li>
-                    <li><a href="#" id="optionsButton">Options</a></li>
-
-                </ul>
-
-            </nav>
-        </header>
-
+    <body>  
+      <header>
+        <nav aria-label="Primary">
+          <a href="StartScreen.html"><i class="fa fa-fw fa-home"></i> </a>
+          <a href="History.html"><i class="fa fa-fw fa-history"></i> </a> 
+          <a href="Statistics.html"><i class="fa fa-fw fa-chart-simple"></i> </a>
+          <a href="#" id="optionsButton"><i class="fa fa-fw fa-cog"></i> </a>
+        </nav>
+      </header>
+      
         <div class = "container">  
 
             <h1>History</h1>
@@ -65,11 +57,7 @@
                 </div>
 
                 <div class = "calendar-dates" id = "calendar-dates"> </div>
-
-
             </div>
-           
-
         </div>
 
         <div class = "optionsPopup" id = "optionsPopup">
@@ -122,13 +110,8 @@
             <button class = "calendarReturn" id = "calendarReturn"> Return to Calendar </button>
 
             <p> Fake Data </p>
-
-
-
         </div>
 
         <script src = "./javascript/History.js"></script>
-
-    </main>  
-
+    </body>  
 </html>
