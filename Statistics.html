@@ -21,6 +21,8 @@
         </nav>
     </header>
 
+    <div class = "container">
+
     <main class="statistics-page">
         <h1>Statistics</h1>
 
@@ -67,7 +69,70 @@
                 <!--The javascript file will be in charge of creating the bars-->
             </div>
         </section>
+
+
     </main>
+
+    </div>
+
+    <!-- Testing Options Popup -->
+    <div class = "optionsPopup" id = "optionsPopup">
+
+        <div class = "top">
+            <a href = "#" class = "optionsExitButton" id = "optionsExitButton"> &times</a>
+        </div>
+
+        <h1> Options</h1>
+
+       <div class = "option">
+        
+            <h2> Dark Theme</h2>
+        
+            <div class = "optionsLayout">
+                    
+                <label class="switch">
+          
+                    <input type="checkbox" id = "darkTheme" onclick = "darkMode()">
+                    
+                    <span class="slider round"></span>
+
+                </label>
+                
+            </div>
+
+            
+        </div>
+
+        <hr>
+
+        <div class = "option">
+
+            <h2> High Contrast Mode</h2>
+    
+            <div class = "optionsLayout">
+    
+                <label class="switch">
+          
+                    <input type="checkbox" id = "highContrast" onclick = "highContrastMode()">
+
+                    <span class="slider round"></span>
+
+
+                </label>
+ 
+            </div>
+
+ 
+        </div>
+
+ 
+        <p> Contrast and colorblindness improvements</p>
+
+ 
+        <hr>
+
+ 
+    </div>
 
     <script src="./javascript/statistics.js"></script>
 
