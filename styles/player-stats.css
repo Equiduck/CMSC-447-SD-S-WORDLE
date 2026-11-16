@@ -1,0 +1,101 @@
+body{
+    margin: 0;
+    color: #444;
+    background-color: white;
+}
+
+.statistics-page{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 50px 40px;
+}
+
+/*Format for the title */
+.statistics-page h1{
+    text-align:center;
+    font-size: 60px;
+    font-weight: normal;
+    margin: 30px 0 50px;
+}
+
+/*player statistics*/
+.statistics-summary{
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 15px;
+    text-align: center;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
+    padding: 40px 0 50px;
+}
+
+.stat h2{
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0 0 25px;
+}
+
+.stat p{
+    font-size: 36px;
+    margin: 0;
+}
+
+/*guess distribution */
+.guess-section{
+    text-align: center;
+    padding: 50px 0 80px;
+}
+
+.guess-section h2{
+    font-size: 36px;
+    font-weight: normal;
+    margin-bottom: 70px;
+}
+
+.guess-chart{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 35px;
+    min-height: 350px;
+}
+
+.guess-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.guess-bar{
+    width: 60px;
+    min-height: 35px;
+    border: 2px solid #555;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+.guess-column span{
+    font-size: 25px;
+}
+
+/* buttons for navigating to other pages from the stats page*/
+.stats-navigation{
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.nav-button{
+    color: black;
+    padding: 14px 24px;
+    border-radius: 6px;
+    font-size: 20px;
+    font-weight: bold;
+}
