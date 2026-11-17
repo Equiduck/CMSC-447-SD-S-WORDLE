@@ -18,6 +18,8 @@ const finalLogin = document.getElementById('submit');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 
+
+
 let selectedLanguage = null;
 let selectedMode = null;
 
@@ -187,18 +189,22 @@ function testing(event) {
 
     event.preventDefault();
 
+    document.getElementById("demo").innerHTML = "";
+    document.getElementById("warning").innerHTML = "";
+
     if (username.value.trim() != '' && password.value.trim() != '') {
 
         document.getElementById("demo").innerHTML = "Hello World";
+        username.value = "";
+        password.value = "";
 
     }
     else {
 
-        alert("Please fill in fields");
+        document.getElementById("warning").innerHTML = "Please enter a valid username/email and password";
         return;
 
     }
-    
 
 }
 
