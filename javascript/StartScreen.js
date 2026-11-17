@@ -13,6 +13,11 @@ const loginPopup = document.querySelector('.loginPopup');
 const signupPopup = document.querySelector('.signupPopup');
 const exitLogin = document.getElementById('exitLogin');
 const exitSignup = document.getElementById('exitSignup');
+
+const finalLogin = document.getElementById('submit');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+
 let selectedLanguage = null;
 let selectedMode = null;
 
@@ -176,3 +181,25 @@ exitLogin.addEventListener('click', closeLogin);
 
 signupButton.addEventListener('click', openSignup);
 exitSignup.addEventListener('click', closeSignup);
+
+
+function testing(event) {
+
+    event.preventDefault();
+
+    if (username.value.trim() != '' && password.value.trim() != '') {
+
+        document.getElementById("demo").innerHTML = "Hello World";
+
+    }
+    else {
+
+        alert("Please fill in fields");
+        return;
+
+    }
+    
+
+}
+
+finalLogin.addEventListener('click', testing);
