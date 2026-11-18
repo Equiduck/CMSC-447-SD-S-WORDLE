@@ -18,6 +18,10 @@ const finalLogin = document.getElementById('submit');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 
+const finalSignup = document.getElementById('signupSubmit');
+const signupUsername = document.getElementById('signupUsername');
+const signupPassword = document.getElementById('signupPassword');
+
 
 
 let selectedLanguage = null;
@@ -186,7 +190,7 @@ exitSignup.addEventListener('click', closeSignup);
 
 
 //Add a function that only triggers the login button when both fields are filled
-function testing(event) {
+function login(event) {
 
     //Prevent the values in the text input to disappear when clicking the button
     event.preventDefault();
@@ -213,4 +217,34 @@ function testing(event) {
 }
 
 //Add a function call for when the login button is pressed
-finalLogin.addEventListener('click', testing);
+finalLogin.addEventListener('click', login);
+
+//Add a function that only triggers the login button when both fields are filled
+function signup(event) {
+
+    //Prevent the values in the text input to disappear when clicking the button
+    event.preventDefault();
+
+    document.getElementById("demo").innerHTML = "";
+    document.getElementById("signupWarning").innerHTML = "";
+
+    if (signupUsername.value.trim() != '' && signupPassword.value.trim() != '') {
+
+        document.getElementById("demo").innerHTML = "Hello World";
+        signupUsername.value = "";
+        signupPassword.value = "";
+
+        localStorage.setItem('triggered', 'true');
+
+    }
+    else {
+
+        document.getElementById("signupWarning").innerHTML = "Please enter a valid username/email and password";
+        return;
+
+    }
+
+}
+
+//Add a function call for when the login button is pressed
+finalSignup.addEventListener('click', signup);
