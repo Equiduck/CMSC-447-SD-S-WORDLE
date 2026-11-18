@@ -185,8 +185,10 @@ signupButton.addEventListener('click', openSignup);
 exitSignup.addEventListener('click', closeSignup);
 
 
+//Add a function that only triggers the login button when both fields are filled
 function testing(event) {
 
+    //Prevent the values in the text input to disappear when clicking the button
     event.preventDefault();
 
     document.getElementById("demo").innerHTML = "";
@@ -198,6 +200,8 @@ function testing(event) {
         username.value = "";
         password.value = "";
 
+        localStorage.setItem('triggered', 'true');
+
     }
     else {
 
@@ -208,4 +212,5 @@ function testing(event) {
 
 }
 
+//Add a function call for when the login button is pressed
 finalLogin.addEventListener('click', testing);
