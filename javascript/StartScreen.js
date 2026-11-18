@@ -175,18 +175,7 @@ let monthName = months[today.getMonth()];
 //Format entire date
 const formattedDate = monthName + ' ' + day + ', ' + year;
 
-//Bring date to html
-document.getElementById("currentDate").innerHTML = formattedDate;
 
-//Let button presses function
-playButton.addEventListener('click', openSelector);
-exitButton.addEventListener('click', closeSelector);
-
-loginButton.addEventListener('click', openLogin);
-exitLogin.addEventListener('click', closeLogin);
-
-signupButton.addEventListener('click', openSignup);
-exitSignup.addEventListener('click', closeSignup);
 
 
 //Add a function that only triggers the login button when both fields are filled
@@ -195,12 +184,10 @@ function login(event) {
     //Prevent the values in the text input to disappear when clicking the button
     event.preventDefault();
 
-    document.getElementById("demo").innerHTML = "";
     document.getElementById("warning").innerHTML = "";
 
     if (username.value.trim() != '' && password.value.trim() != '') {
 
-        document.getElementById("demo").innerHTML = "Hello World";
         username.value = "";
         password.value = "";
 
@@ -216,21 +203,16 @@ function login(event) {
 
 }
 
-//Add a function call for when the login button is pressed
-finalLogin.addEventListener('click', login);
-
 //Add a function that only triggers the login button when both fields are filled
 function signup(event) {
 
     //Prevent the values in the text input to disappear when clicking the button
     event.preventDefault();
 
-    document.getElementById("demo").innerHTML = "";
     document.getElementById("signupWarning").innerHTML = "";
 
     if (signupUsername.value.trim() != '' && signupPassword.value.trim() != '') {
 
-        document.getElementById("demo").innerHTML = "Hello World";
         signupUsername.value = "";
         signupPassword.value = "";
 
@@ -245,6 +227,22 @@ function signup(event) {
     }
 
 }
+
+//Bring date to html
+document.getElementById("currentDate").innerHTML = formattedDate;
+
+//Let button presses function
+playButton.addEventListener('click', openSelector);
+exitButton.addEventListener('click', closeSelector);
+
+loginButton.addEventListener('click', openLogin);
+exitLogin.addEventListener('click', closeLogin);
+
+signupButton.addEventListener('click', openSignup);
+exitSignup.addEventListener('click', closeSignup);
+
+//Add a function call for when the login button is pressed
+finalLogin.addEventListener('click', login);
 
 //Add a function call for when the login button is pressed
 finalSignup.addEventListener('click', signup);
