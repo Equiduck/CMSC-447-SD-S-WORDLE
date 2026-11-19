@@ -166,3 +166,24 @@ if (savedHighContrast !== null) {
     document.getElementById("highContrast").checked = savedHighContrast === "true";
     highContrastMode();
 }
+
+//Sign out button
+const signoutButton = document.getElementById('signout');
+
+if (localStorage.getItem("triggered") == "true") {
+
+  signoutButton.classList.toggle('active');
+
+}
+
+function signoutFunction(event) {
+
+  signoutButton.classList.remove('active');
+
+  localStorage.setItem('triggered', 'false');
+
+
+}
+
+
+signoutButton.addEventListener('click', signoutFunction);
