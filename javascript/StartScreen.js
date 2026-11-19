@@ -193,10 +193,17 @@ function login(event) {
 
         localStorage.setItem('triggered', 'true');
 
+        loginPopup.classList.remove('active');
+        container.classList.remove('active');
+
+        document.getElementById("success").innerHTML = "Successfully logged in";
+
     }
     else {
 
         document.getElementById("warning").innerHTML = "Please enter a valid username/email and password";
+        document.getElementById("success").innerHTML = "";
+        localStorage.setItem('triggered', 'false');
         return;
 
     }
@@ -218,10 +225,19 @@ function signup(event) {
 
         localStorage.setItem('triggered', 'true');
 
+        signupPopup.classList.remove('active');
+        container.classList.remove('active');
+
+        document.getElementById("success").innerHTML = "Successfully logged in";
+
+        
+
     }
     else {
 
         document.getElementById("signupWarning").innerHTML = "Please enter a valid username/email and password";
+        document.getElementById("success").innerHTML = "";
+        localStorage.setItem('triggered', 'false');
         return;
 
     }
