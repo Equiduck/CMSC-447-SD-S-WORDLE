@@ -259,5 +259,19 @@ input:checked + .slider:before {
   background-color: #f5793a;
 }
 
+.signout {
+
+  text-align: left;
+  justify-content: left;
+  width: 1000px;
+  visibility: hidden;
+
+}
+
+.signout.active {
+
+  visibility: visible;
+
+}
 
 

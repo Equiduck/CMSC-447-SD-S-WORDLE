@@ -34,7 +34,7 @@
                     <h1><b>Two-Player Wordle</b></h1>
                     <h2>Wordle with a little twist...</h2>
 
-                
+
                     <div type = "submit" class="buttons">
                         <a href = "#" class = "playButton" id = "playButton"> Play</a>
                         <a href = "#" class = "averageButton" id = "loginButton"> Log in</a>
@@ -42,6 +42,7 @@
                     </div>
 
                     <p id = "currentDate"></p>
+                    <p id = "success"></p>
 
             </div> 
         </div>  
@@ -68,12 +69,15 @@
                 <h1>Login</h1>
 
                 <label for="user">Username</label>
-                <input type="text" placeholder="Enter Username" name="user" required>
+                <input type="text" id = "username" placeholder="Enter Username" name="user" required>
                 <br>
                 <label for="psw">Password</label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" id = "password" placeholder="Enter Password" name="psw" required>
                 <br>
-                <button type="submit" >Login</button>
+                <button type="submit" id = "submit">Login</button>
+                <br>
+                <p id = "warning"></p>
+
             </form>
         </div>
 
@@ -86,12 +90,13 @@
                 <h1>Sign up</h1>
 
                 <label for="user">Username</label>
-                <input type="text" placeholder="Enter Username" name="user" required>
+                <input type="text" id = "signupUsername" placeholder="Enter Username" name="user" required>
                 <br>
                 <label for="psw">Password</label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" id = "signupPassword" placeholder="Enter Password" name="psw" required>
                 <br>
-                <button type="submit" >Sign up</button>
+                <button type="submit" id = "signupSubmit" >Sign up</button>
+                <p id = "signupWarning"></p>
             </form>
         </div>
 

@@ -14,6 +14,17 @@ const signupPopup = document.querySelector('.signupPopup');
 const exitLogin = document.getElementById('exitLogin');
 const exitSignup = document.getElementById('exitSignup');
 const GAME_KEY = "shared-wordle-active-game";
+
+const finalLogin = document.getElementById('submit');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+
+const finalSignup = document.getElementById('signupSubmit');
+const signupUsername = document.getElementById('signupUsername');
+const signupPassword = document.getElementById('signupPassword');
+
+
+
 let selectedLanguage = null;
 let selectedMode = null;
 
@@ -176,6 +187,73 @@ let monthName = months[today.getMonth()];
 //Format entire date
 const formattedDate = monthName + ' ' + day + ', ' + year;
 
+
+
+
+//Add a function that only triggers the login button when both fields are filled
+function login(event) {
+
+    //Prevent the values in the text input to disappear when clicking the button
+    event.preventDefault();
+
+    document.getElementById("warning").innerHTML = "";
+
+    if (username.value.trim() != '' && password.value.trim() != '') {
+
+        username.value = "";
+        password.value = "";
+
+        localStorage.setItem('triggered', 'true');
+
+        loginPopup.classList.remove('active');
+        container.classList.remove('active');
+
+        document.getElementById("success").innerHTML = "Successfully logged in";
+
+    }
+    else {
+
+        document.getElementById("warning").innerHTML = "Please enter a valid username/email and password";
+        document.getElementById("success").innerHTML = "";
+        localStorage.setItem('triggered', 'false');
+        return;
+
+    }
+
+}
+
+//Add a function that only triggers the login button when both fields are filled
+function signup(event) {
+
+    //Prevent the values in the text input to disappear when clicking the button
+    event.preventDefault();
+
+    document.getElementById("signupWarning").innerHTML = "";
+
+    if (signupUsername.value.trim() != '' && signupPassword.value.trim() != '') {
+
+        signupUsername.value = "";
+        signupPassword.value = "";
+
+        localStorage.setItem('triggered', 'true');
+
+        signupPopup.classList.remove('active');
+        container.classList.remove('active');
+
+        document.getElementById("success").innerHTML = "Successfully logged in";
+
+    }
+    else {
+
+        document.getElementById("signupWarning").innerHTML = "Please enter a valid username/email and password";
+        document.getElementById("success").innerHTML = "";
+        localStorage.setItem('triggered', 'false');
+        return;
+
+    }
+
+}
+
 //Bring date to html
 document.getElementById("currentDate").innerHTML = formattedDate;
 
@@ -188,3 +266,9 @@ exitLogin.addEventListener('click', closeLogin);
 
 signupButton.addEventListener('click', openSignup);
 exitSignup.addEventListener('click', closeSignup);
+
+//Add a function call for when the login button is pressed
+finalLogin.addEventListener('click', login);
+
+//Add a function call for when the login button is pressed
+finalSignup.addEventListener('click', signup);
