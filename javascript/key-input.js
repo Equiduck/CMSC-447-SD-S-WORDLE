@@ -172,6 +172,21 @@
     else if (/^[a-z]$/.test(label)) add(label);
   });
 
+  window.WordleInput = {
+    getState: function () {
+      return {
+        rowIndex: rowIndex,
+        letters: letters.slice(),
+        waiting: waiting,
+      };
+    },
+    setRow: function (index, draft, isWaiting) {
+      selectRow(index);
+      letters = Array.isArray(draft) ? draft.slice(0, COLUMNS) : [];
+      waiting = Boolean(isWaiting);
+      render();
+    },
+  };
 
   render();
 })();

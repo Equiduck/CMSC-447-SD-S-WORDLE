@@ -8,6 +8,22 @@
       name="description"
       content="Shared-state Wordle - Sprint 1 layout skeleton (separator bar + 6x5 grid)"
     />
+    <style>
+      html { background-color: #e3e3e1; }
+      html[data-theme="dark"],
+      html[data-theme="dark"] body { background-color: #000; }
+    </style>
+    <script>
+      (function () {
+        var dark = false;
+        try {
+          dark = localStorage.getItem("shared-wordle-dark-mode") === "true";
+        } catch (error) {}
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        document.documentElement.style.backgroundColor = dark ? "#000" : "#e3e3e1";
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+      })();
+    </script>
     <title>Shared-State Wordle - Sprint 1 skeleton</title>
     <!-- No build step: open this file directly, or serve the folder. -->
     <link rel="stylesheet" href="./styles/tokens.css" />
