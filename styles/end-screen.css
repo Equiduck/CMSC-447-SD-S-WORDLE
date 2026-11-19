@@ -80,10 +80,6 @@ body.game-result-open {
   transform-origin: center;
 }
 
-.dark-mode .game-result[data-result="win"] .game-result__icon {
-  color: #f5793a;
-}
-
 .high-contrast-mode .game-result[data-result="win"] .game-result__icon {
   color: #f5793a;
 }
