@@ -113,6 +113,7 @@ exitButton.addEventListener('click', toggle);
 function darkMode() {
 
     var checkbox = document.getElementById("darkTheme");
+    document.documentElement.dataset.theme = checkbox.checked ? "dark" : "light";
 
     if (checkbox.checked == true) {
     
@@ -154,8 +155,6 @@ if (savedHighContrast !== null) {
     document.getElementById("highContrast").checked = savedHighContrast === "true";
     highContrastMode();
 }
-
-
 //Sign out button
 const signoutButton = document.getElementById('signout');
 

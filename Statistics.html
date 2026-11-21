@@ -2,6 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <style>
+      html { background-color: #fff; }
+      html[data-theme="dark"],
+      html[data-theme="dark"] body { background-color: #000; }
+    </style>
+    <script>
+      (function () {
+        var dark = false;
+        try {
+          dark = localStorage.getItem("shared-wordle-dark-mode") === "true";
+        } catch (error) {}
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        document.documentElement.style.backgroundColor = dark ? "#000" : "#fff";
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+      })();
+    </script>
     <title>Game Statistics</title>
 
     <link rel="stylesheet" href="./styles/player-stats.css">

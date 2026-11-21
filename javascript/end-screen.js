@@ -10,6 +10,7 @@
   var newGame = document.getElementById("new-game-button");
   var closeButton = document.getElementById("game-result-close");
   var previousFocus = null;
+  var GAME_KEY = "shared-wordle-active-game";
 
   if (!overlay || !icon || !title || !message || !answer || !newGame || !closeButton) return;
 
@@ -53,6 +54,12 @@
   closeButton.addEventListener("click", closeResult);
   newGame.addEventListener("click", function () {
     newGame.disabled = true;
+    window.WordleGamePersistenceDisabled = true;
+    try {
+      localStorage.removeItem(GAME_KEY);
+    } catch (error) {
+      //Reload without a saved game if storage is unavailable.
+    }
     window.location.reload();
   });
 })();

@@ -13,6 +13,7 @@ const loginPopup = document.querySelector('.loginPopup');
 const signupPopup = document.querySelector('.signupPopup');
 const exitLogin = document.getElementById('exitLogin');
 const exitSignup = document.getElementById('exitSignup');
+const GAME_KEY = "shared-wordle-active-game";
 
 const finalLogin = document.getElementById('submit');
 const username = document.getElementById('username');
@@ -26,6 +27,17 @@ const signupPassword = document.getElementById('signupPassword');
 
 let selectedLanguage = null;
 let selectedMode = null;
+
+function clearSavedGame() {
+    try {
+        localStorage.removeItem(GAME_KEY);
+    } catch (error) {
+        //The start screen should still load if storage is unavailable.
+    }
+}
+
+clearSavedGame();
+window.addEventListener("pageshow", clearSavedGame);
 
 function rememberChoice(key, value) {
     try {
@@ -229,8 +241,6 @@ function signup(event) {
         container.classList.remove('active');
 
         document.getElementById("success").innerHTML = "Successfully logged in";
-
-        
 
     }
     else {

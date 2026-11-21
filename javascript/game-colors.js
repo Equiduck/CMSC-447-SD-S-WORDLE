@@ -14,6 +14,7 @@
   var LANGUAGE_KEY = "shared-wordle-language";
   var MODE_KEY = "shared-wordle-mode";
   var DIFFICULTY_KEY = "shared-wordle-difficulty";
+  var GAME_KEY = "shared-wordle-active-game";
   var rows = document.querySelectorAll(".board .row");
   var params = new URLSearchParams(window.location.search);
   var requestedLanguage = params.get("lang");
@@ -60,7 +61,17 @@
   } catch (error) {
     //Save difficulty.
   }
-  var game = window.WordleCpu.createGame(language, difficulty);
+  var forcedAnswer = params.get("answer");
+  var savedGame = forcedAnswer ? null : readSavedGame();
+  var game;
+  if (savedGame) {
+    game = savedGame.game;
+    language = savedGame.language;
+    playMode = savedGame.playMode;
+    difficulty = savedGame.difficulty;
+  } else {
+    game = window.WordleCpu.createGame(language, difficulty);
+  }
   document.body.dataset.wordLanguage = language;
   document.body.dataset.playMode = playMode;
   document.body.dataset.difficulty = difficulty;
@@ -71,10 +82,78 @@
       player2: "CPU",
     });
   }
-  var forcedAnswer = params.get("answer");
   if (forcedAnswer && /^[a-z]{5}$/i.test(forcedAnswer)) game.answer = forcedAnswer.toLowerCase();
   var keyStates = {};
-  var finished = false;
+  var finished = savedGame ? Boolean(savedGame.finished) : false;
+  var winningPlayer = savedGame ? savedGame.winner : null;
+
+  function readSavedGame() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(GAME_KEY));
+      var savedGame = saved && saved.game;
+      if (
+        !savedGame ||
+        !/^[a-z]{5}$/.test(savedGame.answer || "") ||
+        !Array.isArray(savedGame.guesses) ||
+        !Array.isArray(savedGame.feedback) ||
+        savedGame.guesses.length !== savedGame.feedback.length ||
+        savedGame.guesses.length > rows.length
+      ) {
+        return null;
+      }
+
+      saved.game.used = saved.game.used || {};
+      saved.language = /^(spanish|es)$/i.test(saved.language || "") ? "spanish" : "english";
+      saved.playMode = saved.playMode === "human" ? "human" : "cpu";
+      saved.difficulty = /^(easy|medium|hard)$/i.test(saved.difficulty || "")
+        ? saved.difficulty.toLowerCase()
+        : "hard";
+      saved.draft = Array.isArray(saved.draft) ? saved.draft : [];
+      if (!saved.finished && savedGame.guesses.length > 0) {
+        var lastGuess = savedGame.guesses[savedGame.guesses.length - 1];
+        if (lastGuess === savedGame.answer) {
+          saved.finished = true;
+          saved.winner = (saved.playMode === "human" ||
+            (savedGame.guesses.length - 1) % 2 === 0)
+            ? "human"
+            : "cpu";
+        } else if (savedGame.guesses.length === rows.length) {
+          saved.finished = true;
+          saved.winner = "none";
+        }
+      }
+      return saved;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveGame() {
+    if (window.WordleGamePersistenceDisabled) return;
+
+    var input = window.WordleInput && window.WordleInput.getState
+      ? window.WordleInput.getState()
+      : null;
+    var draft = input &&
+      !input.waiting &&
+      input.rowIndex === game.guesses.length
+      ? input.letters
+      : null;
+    try {
+      localStorage.setItem(GAME_KEY, JSON.stringify({
+        version: 1,
+        game: game,
+        language: language,
+        playMode: playMode,
+        difficulty: difficulty,
+        draft: draft,
+        finished: finished,
+        winner: winningPlayer,
+      }));
+    } catch (error) {
+      //Keep the game active for this page if storage is unavailable.
+    }
+  }
 
   function encodeFeedback(feedback) {
     var encoded = "";
@@ -102,9 +181,11 @@
       return { response_code: -2, feedback: "bgggb" };
     }
 
+    var feedback = window.WordleCpu.record(game, word);
+    saveGame();
     return {
       response_code: 0,
-      feedback: encodeFeedback(window.WordleCpu.record(game, word)),
+      feedback: encodeFeedback(feedback),
     };
   }
 
@@ -124,6 +205,19 @@
       var letter = keys[i].textContent.trim().toLowerCase();
       if (keyStates[letter]) keys[i].setAttribute("data-state", keyStates[letter]);
     }
+  }
+
+  function restoreBoard() {
+    for (var rowIndex = 0; rowIndex < game.guesses.length; rowIndex += 1) {
+      var word = game.guesses[rowIndex];
+      var feedback = game.feedback[rowIndex];
+      var tiles = rows[rowIndex].querySelectorAll('[data-testid="tile"]');
+      for (var column = 0; column < tiles.length; column += 1) {
+        tiles[column].textContent = word[column].toUpperCase();
+        finishTile(tiles[column], word[column], feedback[column], column);
+      }
+    }
+    paintKeys();
   }
 
   function finishTile(tile, letter, state, column) {
@@ -278,8 +372,41 @@
     }
   }
 
+  function playCpuTurn(cpuRow) {
+    if (finished) return;
+
+    var cpuGuess = window.WordleCpu.chooseGuess(game, {
+      avoidAnswer: cpuRow === FIRST_CPU_ROW,
+    });
+    var cpuResponse = submitGameGuess(cpuGuess);
+    var cpuFeedback = decodeFeedback(cpuResponse.feedback);
+    if (cpuResponse.response_code !== 0 || !cpuFeedback) {
+      finish("none");
+      return;
+    }
+    typeWord(cpuRow, cpuGuess, function () {
+      paintRow(cpuRow, cpuGuess, cpuFeedback, function () {
+        if (cpuGuess === game.answer) {
+          finish("cpu");
+          return;
+        }
+        if (cpuRow === rows.length - 1) {
+          finish("none");
+          return;
+        }
+        saveGame();
+        advanceTurn();
+        document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
+          detail: { nextRow: cpuRow + 1 },
+        }));
+      });
+    });
+  }
+
   function finish(winner) {
+    winningPlayer = winner;
     finished = true;
+    saveGame();
     document.dispatchEvent(new CustomEvent("wordle:gameover", {
       detail: {
         answer: game.answer,
@@ -314,35 +441,58 @@
 
       //Wait for CPU.
       window.setTimeout(function () {
-        if (finished) return;
-        var cpuRow = detail.rowIndex + 1;
-        //Keep the first CPU turn from ending the game.
-        var cpuGuess = window.WordleCpu.chooseGuess(game, {
-          avoidAnswer: cpuRow === FIRST_CPU_ROW,
-        });
-        var cpuResponse = submitGameGuess(cpuGuess);
-        var cpuFeedback = decodeFeedback(cpuResponse.feedback);
-        if (cpuResponse.response_code !== 0 || !cpuFeedback) {
-          finish("none");
-          return;
-        }
-        typeWord(cpuRow, cpuGuess, function () {
-          paintRow(cpuRow, cpuGuess, cpuFeedback, function () {
-            if (cpuGuess === game.answer) {
-              finish("cpu");
-              return;
-            }
-            if (cpuRow === rows.length - 1) {
-              finish("none");
-              return;
-            }
-            advanceTurn();
-            document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
-              detail: { nextRow: cpuRow + 1 },
-            }));
-          });
-        });
+        playCpuTurn(detail.rowIndex + 1);
       }, 700);
     });
   });
+
+  if (!savedGame) {
+    saveGame();
+  } else {
+    function restoreSavedGame() {
+      var nextRow = Math.min(game.guesses.length, rows.length - 1);
+      restoreBoard();
+      if (game.guesses.length % 2 === 1 && typeof advanceTurn === "function") {
+        advanceTurn();
+      }
+
+      var waitingForCpu = !finished &&
+        playMode === "cpu" &&
+        nextRow % 2 === 1;
+
+      if (!finished && !waitingForCpu) {
+        document.dispatchEvent(new CustomEvent("wordle:cpuplayed", {
+          detail: { nextRow: nextRow },
+        }));
+      }
+
+      if (window.WordleInput && window.WordleInput.setRow) {
+        window.WordleInput.setRow(nextRow, savedGame.draft || [], waitingForCpu);
+      }
+
+      if (finished) {
+        document.dispatchEvent(new CustomEvent("wordle:gameover", {
+          detail: {
+            answer: game.answer,
+            guesses: game.guesses.length,
+            outcome: winningPlayer === "human" ? "win" : "loss",
+            winner: winningPlayer,
+          },
+        }));
+        return;
+      }
+
+      if (waitingForCpu) {
+        playCpuTurn(nextRow);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", restoreSavedGame, { once: true });
+    } else {
+      restoreSavedGame();
+    }
+  }
+
+  window.addEventListener("pagehide", saveGame);
 })();
