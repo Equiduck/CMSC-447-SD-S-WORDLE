@@ -466,7 +466,7 @@
         }));
       }
 
-      if (window.WordleInput && window.WordleInput.setRow) {
+      if (!finished && window.WordleInput && window.WordleInput.setRow) {
         window.WordleInput.setRow(nextRow, savedGame.draft || [], waitingForCpu);
       }
 
