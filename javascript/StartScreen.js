@@ -16,7 +16,7 @@ const exitSignup = document.getElementById('exitSignup');
 const GAME_KEY = "shared-wordle-active-game";
 
 const finalLogin = document.getElementById('submit');
-const username = document.getElementById('username');
+const email = document.getElementById('email');
 const password = document.getElementById('password');
 
 const finalSignup = document.getElementById('signupSubmit');
@@ -198,9 +198,9 @@ function login(event) {
 
     document.getElementById("warning").innerHTML = "";
 
-    if (username.value.trim() != '' && password.value.trim() != '') {
+    if (email.value.trim() != '' && password.value.trim() != '') {
 
-        username.value = "";
+        email.value = "";
         password.value = "";
 
         localStorage.setItem('triggered', 'true');
@@ -213,7 +213,7 @@ function login(event) {
     }
     else {
 
-        document.getElementById("warning").innerHTML = "Please enter a valid username/email and password";
+        document.getElementById("warning").innerHTML = "Please enter a valid email and password";
         document.getElementById("success").innerHTML = "";
         localStorage.setItem('triggered', 'false');
         return;
