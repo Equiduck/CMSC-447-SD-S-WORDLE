@@ -1,3 +1,14 @@
+/*Selected langauge is displayed under game title*/
+#game-language{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+
 /* The 6x5 grid. */
 
 .board-container {

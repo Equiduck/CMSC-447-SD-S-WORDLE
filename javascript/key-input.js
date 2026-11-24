@@ -2,6 +2,25 @@
 (function () {
   "use strict";
 
+  //check if spanish was selected 
+  var check = new URLSearchParams(window.location.search);
+  var selectedLanguage = check.get("lang") || localStorage.getItem("shared-wordle-language") || "en";
+  var spanish = selectedLanguage === "es";
+
+  //display spanish keybaord instructions
+  var spanishKeyboardTip = document.getElementById("spanish-keyboard-tip")
+  if(spanishKeyboardTip){
+    spanishKeyboardTip.hidden = !spanish;
+  }
+
+  //close instructions
+  var closeKeyboardTip = document.getElementById("close-keyboard-tip");
+  if(closeKeyboardTip && spanishKeyboardTip){
+    closeKeyboardTip.addEventListener("click", function(){
+      spanishKeyboardTip.hidden = true;
+    })
+  }
+
   var COLUMNS = 5;
   var ORDINALS = ["th", "st", "nd", "rd"];
   var letters = [];
@@ -51,6 +70,62 @@
     if (letters.length === 0) return;
     letters.pop();
     render();
+  }
+
+  //letters that have accents in spanish
+  var accentLetters = { a: ["a", "á"], e:["e", 'é'], i:["i", "í"], o:["o","ó"], u:["u","ú","ü"], n:["n","ñ"]};
+
+  //variables for when a key is held
+  var holdTimer = null;
+  var heldLetter = null;
+  var popupOpened = false;
+
+  //find the accent popup elements in HTML
+  var accentPopup = document.getElementById("accent-popup");
+  var accentOptions = document.getElementById("accent-options");
+  var closeAccentButton = document.getElementById("close-accent-popup");
+  var accentOverlay = document.getElementById("accent-overlay");
+
+  //closing the popup for accent keys
+  function closeAccentPopup(){
+    accentPopup.hidden = true;
+    accentOverlay.hidden = true;
+    accentOptions.innerHTML = "";
+  }
+
+  //open the accent popup for the selected letter but only if spanish is the language 
+  function openAccentPopup(letter){
+    if(!spanish || locked || waiting) return;
+    if(!accentPopup || !accentOptions) return;
+
+    var options = accentLetters[letter];
+
+    if(!options) return;
+
+    popupOpened = true;
+    accentOptions.innerHTML = "";
+
+    options.forEach(function(option){
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = option.toUpperCase();
+
+      //Add selected letter to the wordle board 
+      button.addEventListener("click", function(){
+        add(option);
+        closeAccentPopup();
+      });
+
+      accentOptions.appendChild(button);
+    });
+
+    accentOverlay.hidden = false;
+    accentPopup.hidden = false;
+    closeAccentButton.focus();
+  }
+
+  if(closeAccentButton){
+    closeAccentButton.addEventListener("click", closeAccentPopup);
   }
 
   //Function for submitting the current five-letter guess
@@ -123,6 +198,11 @@
 
   document.addEventListener("wordle:cpuplayed", function (event) {
     waiting = false;
+
+    //reset spanish keyboard hold detection
+    clearTimeout(holdTimer);
+    heldLetter = null;
+    popupOpened = false;
     if (event.detail && typeof event.detail.nextRow === "number") {
       selectRow(event.detail.nextRow);
     }
@@ -135,6 +215,11 @@
 
   document.addEventListener("keydown", function (event) {
     
+    if(!accentPopup.hidden){
+      event.preventDefault();
+      return;
+    }
+
     //Check if keyboard has been disabled
     var checkbox = document.getElementById("keyboardElement");
 
@@ -151,16 +236,99 @@
       else if(event.key == "Enter"){
         submitGuess();
       }
-      else if (/^[a-z]$/i.test(event.key)) add(event.key.toLowerCase());
+
+      else if(/^[a-zñáéíóúü]$/i.test(event.key)){
+        var letter = event.key.toLowerCase();
+
+        if(!spanish){
+          if (/^[a-z]$/.test(letter)) add(letter);
+        }
+        else{
+          //Spanish mode that checks if the ketter is held
+          if(locked || waiting || heldLetter || !accentPopup.hidden) return;
+
+          heldLetter = letter;
+          popupOpened = false;
+
+          if(accentLetters[letter]){
+            holdTimer = setTimeout(function(){
+              openAccentPopup(letter);
+            }, 500);
+          }
+
+        }
+      }
 
     }
     
   });
 
+  document.addEventListener("keyup", function(event){
+    if(!spanish) return;
+
+    var letter = event.key.toLowerCase();
+
+    if(letter !== heldLetter) return;
+
+    clearTimeout(holdTimer);
+
+    if(!popupOpened && accentPopup.hidden){
+      add(letter);
+    }
+    heldLetter = null;
+  });
+
+  //Adding a new on screen hold detection for the spanish accents
+  var screenHoldTimer = null;
+  var screenHeldButton = null;
+  var ignoreNextClick = false;
+
+  document.addEventListener("pointerdown", function(event){
+    var button = event.target.closest(".keyboard-Container button");
+
+    if(!button || !spanish || !accentPopup.hidden) return;
+
+    var letter = button.textContent.trim().toLowerCase();
+
+    if(!accentLetters[letter]) return;
+
+    screenHeldButton = button;
+
+    screenHoldTimer = setTimeout(function(){
+      ignoreNextClick = true;
+      openAccentPopup(letter);
+    }, 500);
+  });
+
+  //stop timer when the key is released 
+  document.addEventListener("pointerup", function(){
+    clearTimeout(screenHoldTimer);
+    screenHeldButton = null;
+  });
+
+  //cancel interrupted press
+  document.addEventListener("pointercancel", function(){
+    clearTimeout(screenHoldTimer);
+    screenHeldButton = null;
+  });
+
+  //cancel press if pointer leaves key
+  document.addEventListener("pointerout", function(event){
+    if(event.target === screenHeldButton){
+      clearTimeout(screenHoldTimer);
+      screenHeldButton = null;
+    }
+  });
   
   document.addEventListener("click", function (event) {
     var button = event.target.closest(".keyboard-Container button");
     if (!button) return;
+    if(!accentPopup.hidden) return;
+
+    if(ignoreNextClick){
+      ignoreNextClick = false;
+      return;
+    }
     var label = button.textContent.trim().toLowerCase();
     if (label === "delete") remove();
 
@@ -169,7 +337,11 @@
       submitGuess();
     }
     
-    else if (/^[a-z]$/.test(label)) add(label);
+    else if (/^[a-z]$/.test(label)){
+      if(spanish || /^[a-z]$/.test(label)){
+        add(label);
+      }
+    }
   });
 
   window.WordleInput = {
