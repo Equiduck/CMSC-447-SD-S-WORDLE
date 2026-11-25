@@ -37,6 +37,8 @@
     return value + suffix;
   }
 
+  resetAccentHold();
+
   function selectRow(index) {
     rowIndex = Math.min(index, boardRows.length - 1);
     row = boardRows[rowIndex];
@@ -79,6 +81,15 @@
   var holdTimer = null;
   var heldLetter = null;
   var popupOpened = false;
+  var heldLetterIndex = -1;
+
+  function resetAccentHold(){
+    clearTimeout(holdTimer);
+    heldLetter = null;
+    heldLetterIndex = -1;
+    popupOpened = false;
+  }
+
 
   //find the accent popup elements in HTML
   var accentPopup = document.getElementById("accent-popup");
@@ -94,7 +105,7 @@
   }
 
   //open the accent popup for the selected letter but only if spanish is the language 
-  function openAccentPopup(letter){
+  function openAccentPopup(letter, replaceIndex){
     if(!spanish || locked || waiting) return;
     if(!accentPopup || !accentOptions) return;
 
@@ -112,7 +123,17 @@
 
       //Add selected letter to the wordle board 
       button.addEventListener("click", function(){
-        add(option);
+        if(!locked && !waiting){
+          if(typeof replaceIndex === "number"){
+            if(letters[replaceIndex] === letter){
+              letters[replaceIndex] = option;
+              render();
+            }
+          }
+          else{
+            add(option);
+          }
+        }
         closeAccentPopup();
       });
 
@@ -200,9 +221,8 @@
     waiting = false;
 
     //reset spanish keyboard hold detection
-    clearTimeout(holdTimer);
-    heldLetter = null;
-    popupOpened = false;
+    resetAccentHold();
+
     if (event.detail && typeof event.detail.nextRow === "number") {
       selectRow(event.detail.nextRow);
     }
@@ -245,14 +265,27 @@
         }
         else{
           //Spanish mode that checks if the ketter is held
-          if(locked || waiting || heldLetter || !accentPopup.hidden) return;
+          if(locked || waiting || !accentPopup.hidden) return;
 
-          heldLetter = letter;
+          //cancel previous accent hold detection
+          clearTimeout(holdTimer);
+          heldLetter = null;
+          heldLetterIndex = -1;
           popupOpened = false;
 
+          if(letters.length >= COLUMNS) return;
+
+          //adding the letter immediately
+          add(letter);
+
+          //only detect holding for letters with accent to try and prevent typing lag
           if(accentLetters[letter]){
+            heldLetter = letter;
+            heldLetterIndex = letters.length - 1;
+
+            var replaceIndex = heldLetterIndex;
             holdTimer = setTimeout(function(){
-              openAccentPopup(letter);
+              openAccentPopup(letter, heldLetterIndex);
             }, 500);
           }
 
@@ -271,11 +304,8 @@
     if(letter !== heldLetter) return;
 
     clearTimeout(holdTimer);
-
-    if(!popupOpened && accentPopup.hidden){
-      add(letter);
-    }
     heldLetter = null;
+    heldLetterIndex = -1;
   });
 
   //Adding a new on screen hold detection for the spanish accents

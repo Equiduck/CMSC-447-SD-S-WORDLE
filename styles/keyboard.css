@@ -155,3 +155,22 @@
   line-height: 1;
   cursor: pointer;
 }
+
+/*dark mode for Spanish accent popup*/
+.dark-mode .accent-popup{
+  background-color: #252525;
+  color: white;
+  border-color: #666;
+}
+
+.dark-mode #accent-options button{
+  background-color: #444;
+  color: white;
+  border: 1px solid #777;
+}
+
+.dark-mode #close-accent-popup{
+  background-color: #444;
+  color: white;
+  border-color: #777;
+}
