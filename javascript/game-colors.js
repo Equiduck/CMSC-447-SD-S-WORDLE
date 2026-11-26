@@ -2,8 +2,6 @@
 (function () {
   "use strict";
 
-  // Live multiplayer is server-authoritative and has its own controller.
-  if (new URLSearchParams(window.location.search).get("mode") === "human") return;
   if (!window.WordleCpu) return;
 
   var ORDINALS = ["th", "st", "nd", "rd"];
