@@ -137,3 +137,8 @@ html[data-theme="dark"] .online-status-banner .online-button:hover { background:
   .onlinePopup, .serverPopup { transition: none; }
   .online-spinner { animation: none; }
 }
+/* Author button styles must not override the HTML hidden attribute. */
+.online-button[hidden], .online-status-banner [hidden] { display: none !important; }
+@media (max-width: 440px) {
+  .popup, .loginPopup, .signupPopup { width: min(400px, calc(100vw - 32px)); height: auto; min-height: 270px; max-height: 90vh; overflow-y: auto; padding-bottom: 18px; }
+}
