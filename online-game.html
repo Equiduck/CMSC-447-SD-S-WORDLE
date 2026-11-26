@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Online Match | Shared-State Wordle</title>
+  <link rel="stylesheet" href="./styles/tokens.css">
+  <link rel="stylesheet" href="./styles/board.css">
+  <link rel="stylesheet" href="./styles/online.css">
+</head>
+<body class="online-page">
+  <main class="online-shell online-shell--game">
+    <header class="online-game-header">
+      <a class="online-nav" href="online.html">Online Lobby</a>
+      <h1>Shared-State Wordle</h1>
+      <p id="online-heading" role="status">Connecting to Team A…</p>
+      <p id="online-message" class="online-note"></p>
+    </header>
+
+    <section class="online-card" aria-label="Game invitation">
+      <p class="online-note">Game ID</p>
+      <p id="online-game-id" class="online-identifier">—</p>
+      <div class="online-actions">
+        <button id="online-copy-id" type="button" class="online-button">Copy ID</button>
+        <button id="online-copy-link" type="button" class="online-button">Copy Link</button>
+        <button id="online-cancel-invite" type="button" class="online-button" hidden>Cancel Invite</button>
+        <button id="online-refresh-button" type="button" class="online-button">Refresh</button>
+      </div>
+      <p id="online-game-feedback" class="online-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="online-card online-game-card" aria-labelledby="turn-indicator">
+      <h2 id="turn-indicator">Waiting for the game…</h2>
+      <div class="online-players">
+        <div><strong id="player1-name">Player 1</strong><p id="player1-status" class="online-note">Waiting</p></div>
+        <div><strong id="player2-name">Player 2</strong><p id="player2-status" class="online-note">Waiting</p></div>
+      </div>
+      <div class="board-container">
+        <div id="board" class="board" aria-label="Shared game board"></div>
+      </div>
+      <p class="online-note">Guesses are disabled until Team A publishes its server-side guess endpoint.</p>
+    </section>
+  </main>
+  <script src="./javascript/api-client.js"></script>
+  <script src="./javascript/online-game.js"></script>
+</body>
+</html>
