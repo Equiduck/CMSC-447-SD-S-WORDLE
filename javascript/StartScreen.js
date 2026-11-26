@@ -192,6 +192,10 @@
     showPanel(onlinePanel);
   }
 
+  document.getElementById("onlineDirectButton").addEventListener("click", function (event) {
+    event.preventDefault();
+    openOnline();
+  });
   document.getElementById("playButton").addEventListener("click", function (event) {
     event.preventDefault();
     resetLanguageStep();
