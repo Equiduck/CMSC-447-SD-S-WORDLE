@@ -110,7 +110,7 @@
       showFeedback(onlineFeedback, showError(error), true);
     } finally {
       operationBusy = false;
-      button.disabled = false;
+      button.disabled = button.id === "quickMatchButton" && queueActive;
     }
   }
 
@@ -176,8 +176,7 @@
         if (selectedMode === "cpu") {
           showDifficultyStep();
         } else {
-          showPanel(onlinePanel);
-          updateAccount();
+          openOnline();
         }
       } else if (choice.dataset.difficulty) {
         store("shared-wordle-language", selectedLanguage);
