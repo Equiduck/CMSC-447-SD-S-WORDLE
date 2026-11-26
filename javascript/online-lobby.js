@@ -137,6 +137,10 @@
   $("serverForm").addEventListener("submit", function (event) {
     event.preventDefault();
     var next = $("apiBaseUrl").value.trim();
+    if (queueActive) {
+      message("serverFeedback", "Cancel matchmaking before switching servers.", true);
+      return;
+    }
     try {
       var old = api.getBaseUrl();
       api.configure(next);
@@ -161,15 +165,16 @@
     busy = true;
     $("loginButton").disabled = true;
     message("loginFeedback", "");
+    var authenticated = false;
     try {
       await api.login({
         username: $("username").value.trim(),
         password: $("password").value,
       });
+      authenticated = true;
       $("password").value = "";
       message("loginFeedback", "Successfully logged in.");
       refreshAccount();
-      await detectQueue();
     } catch (error) {
       message("loginFeedback", errorText(error), true);
     } finally {
@@ -177,6 +182,7 @@
       $("loginButton").disabled = false;
       refreshAccount();
     }
+    if (authenticated) await detectQueue();
   });
 
   $("logoutButton").addEventListener("click", function () {
