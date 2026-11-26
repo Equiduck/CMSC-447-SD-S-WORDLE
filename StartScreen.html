@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/StartScreen.css"/>
+    <link rel="stylesheet" href="./styles/online.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,10 +41,13 @@
                         <a href = "#" class = "playButton" id = "playButton"> Play</a>
                         <a href = "#" class = "averageButton" id = "loginButton"> Log in</a>
                         <a href = "#" class = "averageButton" id = "signupButton"> Sign up</a>
+                        <button type="button" class="averageButton" id="apiSettingsButton">Server settings</button>
                     </div>
 
                     <p id = "currentDate"></p>
-                    <p id = "success"></p>
+                    <p id = "success" role="status" aria-live="polite"></p>
+                    <p id="accountSummary" class="online-account"></p>
+                    <button type="button" class="averageButton" id="signOutStart" hidden>Sign out</button>
 
             </div> 
         </div>  
@@ -61,45 +65,72 @@
             <a href="#" class="averageButton choiceButton" id="third-play-choice" hidden></a>
         </div>
 
-        <div class = "loginPopup" id="loginPopup">
+        <div class = "loginPopup" id="loginPopup" role="dialog" aria-modal="true" aria-labelledby="login-title">
             <div class = "top">
                 <a href = "#" class = "exitButton" id = "exitLogin"> &times</a>
             </div>
 
-            <form>
-                <h1>Login</h1>
+            <form id="loginForm">
+                <h1 id="login-title">Login</h1>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter Email" name="email" autocomplete="email" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter Username" name="username" autocomplete="username" required>
                 <br>
                 <label for="psw">Password</label>
                 <input type="password" id = "password" placeholder="Enter Password" name="psw" required>
                 <br>
                 <button type="submit" id = "submit">Login</button>
                 <br>
-                <p id = "warning"></p>
+                <p id = "warning" role="alert"></p>
 
             </form>
         </div>
 
-        <div class = "signupPopup" id="signupButton">
-            <div class = "top">
-                <a href = "#" class = "exitButton" id = "exitSignup"> &times</a>
+        <div class="signupPopup" id="signupPopup" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+            <div class="top"><button type="button" class="exitButton" id="exitSignup" aria-label="Close">&times;</button></div>
+            <h1 id="signup-title">Sign up</h1>
+            <p>Account registration is not yet available through Team A's API.</p>
+            <p>You can log in with an existing account or continue playing against the CPU.</p>
+            <button type="button" class="averageButton" id="signupLoginButton">Log in instead</button>
+        </div>
+
+        <section class="onlinePopup" id="onlinePopup" role="dialog" aria-modal="true" aria-labelledby="online-title">
+            <div class="top"><button type="button" class="exitButton" id="exitOnline" aria-label="Close">&times;</button></div>
+            <h1 id="online-title">Play Online</h1>
+            <p class="online-hint">Play with a friend or find an opponent. Online games use your server account's language preference.</p>
+            <p id="online-signin-required" class="online-signin-required" hidden>Sign in to use multiplayer. <button type="button" class="online-button online-button--small" id="onlineLoginButton">Log in</button></p>
+            <div class="online-actions">
+                <button type="button" class="online-button" id="createInviteButton">Create Invite</button>
+                <button type="button" class="online-button" id="quickMatchButton">Quick Match</button>
+                <button type="button" class="online-button" id="resumeGameButton">Resume Game</button>
+                <button type="button" class="online-button" id="joinInviteFocusButton">Join Invite</button>
             </div>
-
-            <form>
-                <h1>Sign up</h1>
-
-                <label for="user">Username</label>
-                <input type="text" id = "signupUsername" placeholder="Enter Username" name="user" required>
-                <br>
-                <label for="psw">Password</label>
-                <input type="password" id = "signupPassword" placeholder="Enter Password" name="psw" required>
-                <br>
-                <button type="submit" id = "signupSubmit" >Sign up</button>
-                <p id = "signupWarning"></p>
+            <form class="online-form" id="joinInviteForm">
+                <label for="inviteId">Invitation Game ID</label>
+                <input id="inviteId" class="online-input" type="text" placeholder="Paste the invitation ID" autocomplete="off" spellcheck="false" required>
+                <button class="online-button" type="submit" id="joinInviteButton">Join Friend's Game</button>
             </form>
-        </div>
+            <div class="online-lobby" id="matchmakingLobby" hidden>
+                <p><span class="online-spinner" aria-hidden="true"></span>Waiting for an opponent…</p>
+                <button type="button" class="online-button online-button--small" id="cancelMatchButton">Cancel Matchmaking</button>
+            </div>
+            <p id="online-feedback" class="online-feedback" role="status" aria-live="polite"></p>
+            <hr class="online-divider">
+            <button type="button" class="online-button online-button--small online-button--subtle" id="onlineServerSettingsButton">Server settings</button>
+        </section>
+
+        <section class="serverPopup" id="serverPopup" role="dialog" aria-modal="true" aria-labelledby="server-title">
+            <div class="top"><button type="button" class="exitButton" id="exitServer" aria-label="Close">&times;</button></div>
+            <h1 id="server-title">Server Settings</h1>
+            <p>Enter Team A's backend address. Requests from Team C go only to this server.</p>
+            <form class="online-form" id="serverForm">
+                <label for="apiBaseUrl">Backend URL</label>
+                <input class="online-input" type="url" id="apiBaseUrl" placeholder="http://127.0.0.1:5000" required autocomplete="url">
+                <button type="submit" class="online-button">Save Server</button>
+            </form>
+            <p class="online-hint">Changing servers signs you out. If the browser blocks requests, Team A may need to enable cross-origin access or serve the frontend from the same origin.</p>
+            <p id="server-feedback" class="online-feedback" role="status" aria-live="polite"></p>
+        </section>
 
         <script src="./javascript/api-client.js"></script>
         <script src = "./javascript/StartScreen.js"></script>
