@@ -20,6 +20,7 @@
   var inFlight = false;
   var disposed = false;
   var game = null;
+  var terminalError = false;
   var rank = { absent: 1, present: 2, correct: 3 };
 
   banner.hidden = false;
@@ -180,6 +181,7 @@
       status("A valid game ID is required.", true);
       return;
     }
+    terminalError = false;
     inFlight = true;
     refreshButton.disabled = true;
     displayId();
@@ -193,11 +195,14 @@
       if (disposed) return;
       heading.textContent = "Connection Unavailable";
       status(describeError(error), true);
-      if (error.status === 401 || error.status === 403 || error.status === 404) return;
+      if (error.status === 401 || error.status === 403 || error.status === 404) {
+        terminalError = true;
+        return;
+      }
     } finally {
       inFlight = false;
       refreshButton.disabled = false;
-      if (!disposed && api.isAuthenticated()) schedule(document.hidden ? 10000 : 4000);
+      if (!disposed && !terminalError && api.isAuthenticated()) schedule(document.hidden ? 10000 : 4000);
     }
   }
 
