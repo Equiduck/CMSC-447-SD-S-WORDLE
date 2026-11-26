@@ -1,10 +1,9 @@
-//Team A API client. Team C communicates only with Team A; Team A owns Team B integration.
+//Team A API client.
 (function (global) {
   "use strict";
 
   var BASE_URL_KEY = "shared-wordle-api-base-url";
   var SESSION_KEY = "shared-wordle-api-session";
-  var GAME_ID_KEY = "shared-wordle-api-game-id";
 
   function ApiError(message, status, body) {
     this.name = "ApiError";
@@ -59,22 +58,7 @@
     }
   }
 
-  function getSavedGameId() {
-    return storageGet(GAME_ID_KEY);
-  }
-
-  function rememberGameId(gameId) {
-    if (gameId) storageSet(GAME_ID_KEY, String(gameId));
-    return gameId;
-  }
-
-  function clearSavedGameId() {
-    storageRemove(GAME_ID_KEY);
-  }
-
   function saveSession(session) {
-    var previous = getSession();
-    if (previous && previous.user_id !== session.user_id) clearSavedGameId();
     var saved = {
       user_id: session.user_id,
       username: session.username,
@@ -88,7 +72,6 @@
 
   function clearSession() {
     storageRemove(SESSION_KEY);
-    clearSavedGameId();
   }
 
   function sessionExpiration(session) {
@@ -233,10 +216,9 @@
       method: "POST",
       body: payload,
     }).then(function (game) {
-      rememberGameId(game.game_id);
       return {
         gameId: game.game_id,
-        status: game.status,
+        status: game.game_status,
         language: game.language,
         raw: game,
       };
@@ -244,10 +226,7 @@
   }
 
   function getGame(gameId) {
-    return request("/games/" + encodeURIComponent(gameId)).then(normalizeGame).then(function (game) {
-      rememberGameId(game.gameId);
-      return game;
-    });
+    return request("/games/" + encodeURIComponent(gameId)).then(normalizeGame);
   }
 
   function joinGame(gameId, payload) {
@@ -255,10 +234,9 @@
       method: "POST",
       body: payload,
     }).then(function (game) {
-      rememberGameId(game.game_id);
       return {
         gameId: game.game_id,
-        status: game.status,
+        status: game.game_status,
         turnOrder: game.turn_order,
         raw: game,
       };
@@ -266,63 +244,31 @@
   }
 
   function cancelGame(gameId) {
-    return request("/games/" + encodeURIComponent(gameId), { method: "DELETE" }).then(function (result) {
-      if (getSavedGameId() === String(gameId)) clearSavedGameId();
-      return result;
-    });
-  }
-
-  function rememberMatch(result) {
-    if (result && result.game_id) rememberGameId(result.game_id);
-    return result;
+    return request("/games/" + encodeURIComponent(gameId), { method: "DELETE" });
   }
 
   function joinMatchmaking() {
-    return request("/games/match", { method: "POST" }).then(rememberMatch);
+    return request("/games/match", { method: "POST" });
   }
 
   function getMatchmaking() {
-    return request("/games/match").then(rememberMatch);
+    return request("/games/match");
   }
 
   function leaveMatchmaking() {
     return request("/games/match", { method: "DELETE" });
   }
 
-  // Reconnect only to an existing Team A game. Do not call /join again:
-  // Team A rejects joining a game that has already started.
-  function resumeGame() {
-    function findStartedMatch() {
-      return getMatchmaking().then(function (result) {
-        return result && result.game_id ? getGame(result.game_id) : null;
-      });
-    }
-
-    var gameId = getSavedGameId();
-    if (!gameId) return findStartedMatch();
-    return getGame(gameId).then(function (game) {
-      if (game.status === "waiting" || game.status === "started") return game;
-      clearSavedGameId();
-      return findStartedMatch();
-    }).catch(function (error) {
-      if (error.status !== 403 && error.status !== 404) throw error;
-      clearSavedGameId();
-      return findStartedMatch();
-    });
-  }
-
   global.WordleApi = {
     ApiError: ApiError,
     cancelGame: cancelGame,
     clearSession: clearSession,
-    clearSavedGameId: clearSavedGameId,
     configure: configure,
     createGame: createGame,
     getBaseUrl: getBaseUrl,
     getGame: getGame,
     getMatchmaking: getMatchmaking,
     getSession: getSession,
-    getSavedGameId: getSavedGameId,
     isAuthenticated: isAuthenticated,
     isSessionExpired: isSessionExpired,
     joinGame: joinGame,
@@ -331,7 +277,6 @@
     login: login,
     normalizeGame: normalizeGame,
     request: request,
-    resumeGame: resumeGame,
     saveSession: saveSession,
   };
 })(window);
