@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="./styles/keyboard.css"/>
     <link rel="stylesheet" href="./styles/player.css"/>
     <link rel="stylesheet" href="./styles/end-screen.css"/>
+    <link rel="stylesheet" href="./styles/online.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
   </head>
 
@@ -53,6 +54,25 @@
       <div class="app">
 
         <h1>Shared-State Wordle</h1>
+
+        <section id="online-status-banner" class="online-status-banner" hidden aria-live="polite">
+          <h2 id="online-heading">Online Match</h2>
+          <p id="online-message">Connecting to Team A…</p>
+          <p class="online-identifier" id="online-game-id"></p>
+          <div id="online-share-controls" hidden>
+            <p>Invite a friend to join this game.</p>
+            <div class="online-row">
+              <button type="button" class="online-button online-button--small" id="online-copy-id">Copy Game ID</button>
+              <button type="button" class="online-button online-button--small" id="online-copy-link">Copy Invite Link</button>
+            </div>
+          </div>
+          <div class="online-row">
+            <button type="button" class="online-button online-button--small" id="online-cancel-invite" hidden>Cancel Invitation</button>
+            <button type="button" class="online-button online-button--small" id="online-refresh-button">Refresh State</button>
+            <a class="online-button online-button--small" href="StartScreen.html">Main Menu</a>
+          </div>
+          <p id="online-game-feedback" class="online-feedback" role="status"></p>
+        </section>
 
          <!--turn indicator -->
         <h2 id="turn-indicator">Player 1's Turn</h2>
@@ -97,6 +117,7 @@
 
       </div>
 
+      <script src="./javascript/api-client.js"></script>
       <script src="./javascript/board.js"></script>
 
       <div class = "keyboard-Container">
@@ -232,12 +253,12 @@
       </div>
     </div>
 
-    <script src="./javascript/api-client.js"></script>
     <script src="./javascript/words.js"></script>
     <script src="./javascript/cpu.js"></script>
     <script src="./javascript/game-colors.js"></script>
     <script src="./javascript/end-screen.js"></script>
     <script src="./javascript/key-input.js"></script>
+    <script src="./javascript/online-game.js"></script>
     <script src = "./javascript/Options.js"></script>
   </body>
 </html>
