@@ -300,7 +300,11 @@
 
     var gameId = getSavedGameId();
     if (!gameId) return findStartedMatch();
-    return getGame(gameId).catch(function (error) {
+    return getGame(gameId).then(function (game) {
+      if (game.status === "waiting" || game.status === "started") return game;
+      clearSavedGameId();
+      return findStartedMatch();
+    }).catch(function (error) {
       if (error.status !== 403 && error.status !== 404) throw error;
       clearSavedGameId();
       return findStartedMatch();
