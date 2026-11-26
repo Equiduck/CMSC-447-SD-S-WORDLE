@@ -151,7 +151,7 @@ updateTurnDisplay();
 
 const signoutButton = document.getElementById('signout');
 
-if (window.WordleApi && window.WordleApi.isAuthenticated()) {
+if (localStorage.getItem("triggered") == "true") {
 
   signoutButton.classList.toggle('active');
 
@@ -162,7 +162,6 @@ function signoutFunction(event) {
   signoutButton.classList.remove('active');
 
   localStorage.setItem('triggered', 'false');
-  if (window.WordleApi) window.WordleApi.clearSession();
 
 
 }
