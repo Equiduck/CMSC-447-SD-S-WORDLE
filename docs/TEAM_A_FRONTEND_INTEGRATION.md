@@ -1,46 +1,33 @@
-# Team C / Team A integration
+# Team C / Team A integration (isolated implementation)
 
-Team C's browser client communicates ONLY with Team A's Flask API. Team A owns any interaction with Team B's game logic. The UI never calls Team B directly.
+The existing shared Wordle pages and scripts are unchanged. The API work lives in new, separate online pages and in Jacob's own `javascript/api-client.js`. Team C communicates ONLY with Team A's backend, never directly with Team B.
 
-## Implemented in Team C
+## Pages
 
-- Real Team A username/password login using POST /users/login, storing bearer tokens.
-- Invitation creation and cancellation using POST /games and DELETE /games/{id}.
-- Invitation joining using POST /games/{id}/join, by pasted UUID or shareable URL.
-- Quick matchmaking with queue enter, poll, cancel, and queue recovery through POST/GET/DELETE /games/match.
-- A styled game waiting room with invite ID, share link, player names and cancel button for the host.
-- Authenticated GET /games/{id} polling, rendering actual guesses, feedback, players and current turn.
-- Resume an existing game from saved ID, with a matchmaking-status fallback.
-- Visible failures for login, network outages, authorization and missing games.
-- Offline CPU play, unchanged.
+- `online.html` — login, server settings, invite creation/join, matchmaking, queue cancellation, resume, and logout.
+- `online-game.html` — waiting room, invitation ID/link sharing, cancellation by host, server-authoritative game board and turn/status updates.
+- `javascript/online-lobby.js` and `javascript/online-game.js` — controllers for those standalone pages.
+- `styles/online.css` — standalone styling using Team C's existing gray/serif/rounded-button appearance.
+- `javascript/api-client.js` — Team A API wrapper, session and game-ID tracking.
+- `tests/api-client.test.js` — dependency-free API client regression tests.
 
-Guessing is intentionally disabled in online play until Team A supplies its guess endpoint. The frontend never invents successful server guesses.
+**No existing teammate-owned pages or scripts are modified** relative to the original `api-mixin` work. To avoid changing the shared start screen, online play is accessed at `online.html` directly, rather than through a new button on `StartScreen.html`.
 
-## Manual setup
+## Try it
 
-1. Run Team A's Flask backend with its Supabase environment configured.
-2. Serve Team C's HTML using a web server rather than opening file:// links.
-3. Open StartScreen.html, select Server settings, and enter Team A's base URL (such as http://127.0.0.1:5000 for a local backend).
-4. Log in using an existing account, then select Online Play.
-5. Test inviting a second authenticated account: create a game, copy its UUID, sign in as a different user, join with the UUID, and watch the host's waiting room update.
-6. Test Quick Match with two accounts, cancel the queue, and reload/revisit while queued.
-7. Refresh a joined game page to confirm that the server's current state is reconstructed.
+1. Run Team A's Flask backend and configure its Supabase environment.
+2. Serve the repository's static files using a web server.
+3. Navigate to `/online.html`, enter Team A's backend URL, and log in with an existing account.
+4. Create a game to open `online-game.html` and share the game ID (or a link to `online.html?invite=GAME_ID`).
+5. Open the online lobby in another browser session, log in with a second account, and join using the UUID.
+6. The first player's waiting room will update from Team A's `GET /games/{id}` response. Reload the game page to test reconnection.
+7. Quick Match checks `POST/GET/DELETE /games/match` and can recover a queued account.
 
-### Important browser networking limitation
+## Remaining Team A dependencies
 
-If Team C's static site and Team A's Flask server use different origins, Team A must enable appropriate browser cross-origin access (including Authorization and Content-Type headers), or the project should proxy/serve both from one origin. The checked-in Team A Flask code currently contains no CORS setup.
+- Guess submission is not implemented in the checked-in Team A backend. Online pages intentionally do not simulate guesses.
+- Team A account creation, game history, and language-setting endpoints are also pending. The online lobby's language is the logged-in user's backend preference.
+- A browser origin different from Flask needs CORS support from Team A or a same-origin reverse proxy. This cannot be fixed in frontend JavaScript.
+- Team C's API client tests use mock responses; real Flask, Supabase, and browser integration still require testing.
 
-Team A chooses online-game language from the authenticated user's saved language, not the frontend's local selection. Updating that preference requires a backend language endpoint.
-
-## Waiting on Team A
-
-- POST /games/{id}/guess: authoritative guesses and feedback, using Team B behind Team A.
-- POST /users: account signup (front end shows an explicit unavailable state).
-- POST /users/<username>/history: server-backed history.
-- POST /users/edit/language: documented separately, but not implemented in the checked-in Flask routes.
-
-## Regression tests
-
-Run: node --test tests/api-client.test.js
-
-The tests mock Team A responses; no credentials are required. They cover login/bearer auth, create/join status, reconnect, missing games, cancel, and logout. Live Flask/Supabase and browser cross-origin tests still require a running server.
+Run automated tests using: `node --test tests/api-client.test.js`
