@@ -190,6 +190,22 @@
     updateAccount();
     showFeedback(onlineFeedback, "");
     showPanel(onlinePanel);
+    // Restore matchmaking queue state after navigating away/reloading the page.
+    if (queueActive || operationBusy || !api.isAuthenticated() || !api.getBaseUrl()) return;
+    var generation = ++queueGeneration;
+    api.getMatchmaking().then(function (result) {
+      if (currentPanel !== onlinePanel || queueActive || operationBusy || generation !== queueGeneration) return;
+      if (result && result.queued) {
+        queueActive = true;
+        showQueue(true);
+        showFeedback(onlineFeedback, "You're still in Team A's matchmaking queue.");
+        scheduleQueuePoll(generation);
+      } else if (result && result.game_id) {
+        showFeedback(onlineFeedback, "You already have an active game. Select Resume Game.");
+      }
+    }).catch(function () {
+      // A missing server should not stop the player from entering settings.
+    });
   }
 
   document.getElementById("onlineDirectButton").addEventListener("click", function (event) {
