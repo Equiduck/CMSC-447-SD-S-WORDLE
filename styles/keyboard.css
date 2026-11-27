@@ -42,4 +42,136 @@
 
 .keyboard-Container {
   text-align: center;
+  position: relative;
+  background-color: transparent;
+}
+
+
+/*CSS for handling spanish accent popup screen */
+
+.accent-popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  min-height: 160px;
+  box-sizing: border-box;
+  background-color: white;
+  color: black;
+  border: 2px solid #555;
+  border-radius: 12px;
+  padding: 35px 15px 20px;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  z-index: 1001;
+  text-align: center;
+}
+
+.accent-popup[hidden]{
+  display: none;
+}
+
+#accent-options{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+#accent-options button{
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#close-accent-popup{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+  color: black;
+  border: 1px solid #888;
+  border-radius: 5px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.accent-overlay{
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.25);
+  z-index: 1000;
+}
+
+.accent-overlay[hidden]{
+  display: none;
+}
+
+.spanish-keyboard-tip{
+  position: absolute;
+  left: calc(50% + 330px);
+  top: 0;
+  width: 180px;
+  padding: 32px 12px 12px;
+  background-color: lightblue;
+  color: darkblue;
+  border: 1px solid gray;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.spanish-keyboard-tip p{
+  margin: 8px 0;
+}
+
+.spanish-keyboard-tip[hidden]{
+  display: none;
+}
+
+#close-keyboard-tip{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background-color: lightblue;
+  color: darkblue;
+  border: none;
+  border-radius: 4px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/*dark mode for Spanish accent popup*/
+.dark-mode .accent-popup{
+  background-color: #252525;
+  color: white;
+  border-color: #666;
+}
+
+.dark-mode #accent-options button{
+  background-color: #444;
+  color: white;
+  border: 1px solid #777;
+}
+
+.dark-mode #close-accent-popup{
+  background-color: #444;
+  color: white;
+  border-color: #777;
 }

@@ -53,6 +53,9 @@
 
         <h1>Shared-State Wordle</h1>
 
+        <!--Display the selected game language-->
+        <p id="game-language">Language: English</p>
+
          <!--turn indicator -->
         <h2 id="turn-indicator">Player 1's Turn</h2>
 
@@ -96,9 +99,16 @@
 
       </div>
 
-      <script src="./javascript/board.js"></script>
-
       <div class = "keyboard-Container">
+
+      <!--Spanish keybaord instructions-->
+      <div id="spanish-keyboard-tip" class="spanish-keyboard-tip" hidden>
+
+          <button type="button" id="close-keyboard-tip" aria-label="Close Keyboard tip">&times;</button>
+          <strong>Spanish Keyboard Tip</strong>
+          <p>Press and hold A, E, I, O, U, or N to access accent options.</p>
+          <p>Works with both physical and on-screen keyboards.</p>
+      </div>
 
       <!-- First line of keyboard -->
       <button class="button">Q</button>
@@ -138,6 +148,20 @@
       <button class="button">M</button>
       <button class="deleteButton">Delete</button>
 
+      </div>
+      <!--Spanish accent selection popup-->
+      <div id="accent-overlay" class="accent-overlay" hidden></div>
+      <div id="accent-popup" class="accent-popup" hidden>
+
+          <button 
+            type="button"
+            id="close-accent-popup"
+            aria-label="Close accent selection" >
+            &times;
+          </button>
+
+          <p>Select a letter</p>
+          <div id="accent-options"></div>
       </div>
     </div>
   </div>
@@ -231,6 +255,7 @@
       </div>
     </div>
 
+    <script src="./javascript/board.js"></script>
     <script src="./javascript/words.js"></script>
     <script src="./javascript/cpu.js"></script>
     <script src="./javascript/game-colors.js"></script>

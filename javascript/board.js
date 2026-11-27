@@ -1,3 +1,15 @@
+//Get the language that was selected on the start screen
+const language = new URLSearchParams(window.location.search)
+const gameLanguage = language.get("lang");
+
+//find language text in HTML
+const languageDisplay = document.getElementById("game-language");
+
+//display correct language
+if(languageDisplay){
+  languageDisplay.textContent = gameLanguage === "es" ? "Language: Spanish" : "Language: English"
+}
+
 //Sprint one tracking player turn and status 
 let typingTimer;
 //Updates banner for players turn. As of right now it updates when you hit the enter key
